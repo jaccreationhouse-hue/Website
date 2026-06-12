@@ -1,0 +1,15 @@
+{
+  "name": "@jac-cms/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "test": "node --experimental-strip-types --test src/contracts.test.ts",
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.3",
+    "typescript": "~6.0.2"
+  }
+}

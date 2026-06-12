@@ -1,0 +1,23 @@
+{
+  "name": "@jac-cms/admin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-strip-types --test --test-concurrency=1 lib/*.test.ts layout.test.mjs admin-shell.test.mjs collection-editor.test.mjs service-editor.test.mjs careers-page.test.mjs leads-page.test.mjs session-actions.test.mjs",
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^16.0.10",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.3",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "~6.0.2"
+  }
+}

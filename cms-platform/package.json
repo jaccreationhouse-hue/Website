@@ -1,0 +1,19 @@
+{
+  "name": "jac-cms-platform",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present && node --test database/schema.test.mjs",
+    "build": "npm run build --workspace @jac-cms/contracts && npm run build --workspace @jac-cms/api && npm run build --workspace @jac-cms/admin && npm run smoke:boot --workspace @jac-cms/api",
+    "db:setup": "node database/bootstrap.mjs",
+    "dev:api": "npm run dev --workspace @jac-cms/api",
+    "dev:admin": "npm run dev --workspace @jac-cms/admin"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
