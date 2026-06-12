@@ -1,4 +1,4 @@
-const defaultApiBase = 'http://localhost:4000';
+const defaultApiBase = process.env.NODE_ENV === 'production' ? 'https://website-1cc5.onrender.com' : 'http://localhost:4000';
 
 export class CmsHttpError extends Error {
   readonly status: number;

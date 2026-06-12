@@ -69,8 +69,8 @@ export function loadEnv(input: EnvironmentInput = process.env): ApiEnvironment {
   return {
     nodeEnv,
     apiPort: positiveInteger(input, 'API_PORT', 4000),
-    adminOrigin: input.ADMIN_ORIGIN?.trim() || 'http://localhost:3000',
-    publicOrigin: input.PUBLIC_ORIGIN?.trim() || 'http://localhost:5173',
+    adminOrigin: input.ADMIN_ORIGIN?.trim() || 'https://jaccmsadmin.vercel.app,http://localhost:3000',
+    publicOrigin: input.PUBLIC_ORIGIN?.trim() || 'https://website-azure-seven-51.vercel.app,http://localhost:5173',
     mongoUri: input.MONGODB_URI?.trim() || 'mongodb://127.0.0.1:27017',
     mongoDb: input.MONGODB_DB?.trim() || 'jac_cms',
     mongoDnsServers: (input.MONGODB_DNS_SERVERS || '8.8.8.8,1.1.1.1')
