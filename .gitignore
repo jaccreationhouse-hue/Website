@@ -26,46 +26,10 @@ dist-ssr
 *.mp4
 video/*.mp4
 
-# This repository ignores new files by default. Allow files added by this repair.
-!.gitignore
-!src/
-src/*
-!src/pages/
-src/pages/*
-!src/pages/NotFound.tsx
-!src/components/
-src/components/*
-!src/components/ServiceDetailPage.tsx
-!src/data/
-src/data/*
-!src/data/services.ts
-!src/data/services.test.ts
-!src/data/serviceDetails.ts
-!src/data/serviceDetails.test.ts
-!src/data/layout.test.ts
-!src/data/portfolio.test.ts
-!src/data/cmsSections.ts
-!src/utils/
-src/utils/*
-!src/utils/whatsapp.ts
-!src/utils/whatsapp.test.ts
-!src/assets/
-src/assets/*
-!src/assets/john-founder.jpg
-!docs/
-docs/*
-!docs/headless-cms-software-architecture-document.md
-!docs/superpowers/
-docs/superpowers/*
-!docs/superpowers/specs/
-docs/superpowers/specs/*
-!docs/superpowers/specs/2026-06-09-ui-ux-repair-design.md
-!docs/superpowers/plans/
-docs/superpowers/plans/*
-!docs/superpowers/plans/2026-06-09-ui-ux-repair.md
-!docs/superpowers/plans/2026-06-10-headless-cms-platform.md
-!cms-platform/
-!cms-platform/**
+# Ignore the entire video folder because of the large 155MB video file
+video/
+
+# Ignore the CMS platform generated artifacts
 cms-platform/node_modules/
 cms-platform/**/node_modules/
 cms-platform/**/.next/
@@ -74,12 +38,6 @@ cms-platform/*.log
 cms-platform/.env
 cms-platform/.env.*
 !cms-platform/.env.example
-!src/api/
-!src/api/**
-!src/serviceWorker.test.ts
-
-# Cloudinary utility
-!src/utils/cloudinary.ts
 
 # Environment files – keep local, never commit
 .env
