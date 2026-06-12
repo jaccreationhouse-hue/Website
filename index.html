@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/webp" href="%BASE_URL%favicon.webp" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="description" content="JAC Media Land - A youth-powered creative and technology company building thoughtful digital experiences with clarity, precision, and purpose." />
+    <meta name="keywords" content="JAC Media Land, Creative Agency, Web Development, App Development, Digital Marketing, SEO" />
+    <meta property="og:title" content="JAC Media Land - Making Sense" />
+    <meta property="og:description" content="A youth-powered creative and technology company building thoughtful digital experiences." />
+    <meta property="og:type" content="website" />
+    <title>JAC Media Land - Making Sense</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', async () => {
+          try {
+            const wasControlled = Boolean(navigator.serviceWorker.controller);
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map((registration) => registration.unregister()));
+
+            if ('caches' in window) {
+              const cacheNames = await caches.keys();
+              await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+            }
+
+            if (wasControlled && !sessionStorage.getItem('jac-service-worker-cleaned')) {
+              sessionStorage.setItem('jac-service-worker-cleaned', 'true');
+              window.location.reload();
+            } else {
+              sessionStorage.removeItem('jac-service-worker-cleaned');
+            }
+          } catch (error) {
+            console.warn('Could not remove obsolete service worker data.', error);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -27,7 +27,6 @@ dist-ssr
 video/*.mp4
 
 # This repository ignores new files by default. Allow files added by this repair.
-*
 !.gitignore
 !src/
 src/*
