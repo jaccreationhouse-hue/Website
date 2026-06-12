@@ -66,8 +66,8 @@ export default function AdminShell({ children }: Readonly<{ children: React.Reac
             <strong>JAC Media Land</strong>
           </div>
           <div className="topbar-actions">
-            <a href="http://localhost:5173" target="_blank" rel="noreferrer">View website</a>
-            <a href="http://localhost:4000/docs" target="_blank" rel="noreferrer">API docs</a>
+            <a href={process.env.NODE_ENV === 'production' ? 'https://website-azure-seven-51.vercel.app' : 'http://localhost:5173'} target="_blank" rel="noreferrer">View website</a>
+            <a href={process.env.NODE_ENV === 'production' ? 'https://website-1cc5.onrender.com/docs' : 'http://localhost:4000/docs'} target="_blank" rel="noreferrer">API docs</a>
             <SessionActions />
           </div>
         </header>
