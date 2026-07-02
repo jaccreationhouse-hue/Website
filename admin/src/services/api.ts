@@ -1,9 +1,15 @@
 export const API_BASE_URL = (import.meta.env.VITE_CMS_API_URL || (import.meta.env.DEV ? 'http://localhost:4000' : '')).replace(/\/+$/, '');
+export const SITE_BASE_URL = (import.meta.env.VITE_SITE_URL || '').replace(/\/+$/, '');
+
+const looksLikeLocalImageName = (value: string) => /\.(avif|gif|jpe?g|png|svg|webp)$/i.test(value);
 
 export const resolveMediaUrl = (url?: string) => {
   if (!url) return '';
-  if (!url.startsWith('/')) return url;
-  return `${API_BASE_URL}${url}`;
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('/uploads')) return `${API_BASE_URL}${url}`;
+  if (url.startsWith('/')) return SITE_BASE_URL ? `${SITE_BASE_URL}${url}` : url;
+  if (looksLikeLocalImageName(url)) return SITE_BASE_URL ? `${SITE_BASE_URL}/team/${url}` : url;
+  return url;
 };
 
 const getHeaders = (isMultipart = false) => {
