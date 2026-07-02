@@ -13,7 +13,7 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const fallbackTeamMembers = [
   { slug: 'john-charles', title: 'John Charles', role: 'Founder and CEO', image: 'john-founder.jpg', featured: true, message: 'Building a team where thoughtful ideas, bold creativity, and dependable execution come together to create work that matters.' },
   { slug: 'dharanidhran-p', title: 'DHARANIDHRAN P', role: 'HR & MANAGER', image: 'dharanidhran.png' },
-  { slug: 'kapeesh-s', title: 'KAPEESH S', role: 'TEAM LEAD', image: 'kapeesh.JPG' },
+  { slug: 'kapeesh-s', title: 'KAPEESH S', role: 'TEAM LEAD', image: 'kapeesh.jpg' },
   { slug: 'gowshik-s', title: 'GOWSHIK S', role: 'DEVELOPER', image: 'gowsi.jpeg' },
   { slug: 'mohan-raj-p', title: 'MOHAN RAJ P', role: 'UI UX DESIGNER', image: 'mohan.jpeg' },
   { slug: 'sahaya-stephen-s', title: 'SAHAYA STEPHEN S', role: 'DATA ANALYST', image: 'stephen.jpeg' },
