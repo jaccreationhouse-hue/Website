@@ -21,6 +21,7 @@ import {
 } from 'react-icons/fi';
 import { CultureIllustration } from '../components/Illustrations.tsx';
 import { teamMemberImageUrl } from '../utils/cloudinary';
+import { useCmsSettings } from '../api/useCmsSettings';
 
 import { buildCmsUrl } from '../api/cmsClient';
 
@@ -42,6 +43,7 @@ function getFounderImageUrl(image: string | undefined): string {
 }
 
 export default function About() {
+  const settings = useCmsSettings();
   const teamMembers = useCmsCollection<TeamMemberItem>('teamMembers', fallbackTeamMembers);
   const founder = teamMembers.find((member) => member.featured) ?? teamMembers[0] ?? fallbackTeamMembers[0];
   const team = teamMembers.filter((member) => !member.featured);
@@ -95,15 +97,15 @@ export default function About() {
                 {/* Logo lockup */}
                 <div className="abp-logo-lockup">
                   <img
-                    src={logoImageDark}
-                    alt="JAC MediaLand Logo"
+                    src={settings.logoUrl || logoImageDark}
+                    alt={`${settings.companyName || 'JAC MediaLand'} Logo`}
                     className="abp-logo-img"
                     width="96"
                     height="96"
                     decoding="async"
                   />
                   <div className="abp-logo-text-group">
-                    <span className="abp-logo-brand">JAC MediaLand</span>
+                    <span className="abp-logo-brand">{settings.companyName || 'JAC MediaLand'}</span>
                     <span className="abp-logo-tagline">IT Solutions</span>
                   </div>
                 </div>

@@ -36,6 +36,14 @@ import {
   createProgram,
   updateProgram,
   deleteProgram,
+  getHighlights,
+  createHighlight,
+  updateHighlight,
+  deleteHighlight,
+  getClientLogos,
+  createClientLogo,
+  updateClientLogo,
+  deleteClientLogo,
   getCareerOpenings,
   createCareerOpening,
   updateCareerOpening,
@@ -142,6 +150,22 @@ router.route('/programs')
 router.route('/programs/:id')
   .put(protect, updateProgram)
   .delete(protect, deleteProgram);
+
+// Highlights
+router.route('/highlights')
+  .get(getHighlights)
+  .post(protect, createHighlight);
+router.route('/highlights/:id')
+  .put(protect, updateHighlight)
+  .delete(protect, deleteHighlight);
+
+// Trusted Companies
+router.route('/trusted-companies')
+  .get(getClientLogos)
+  .post(protect, createClientLogo);
+router.route('/trusted-companies/:id')
+  .put(protect, updateClientLogo)
+  .delete(protect, deleteClientLogo);
 
 // Career Openings
 router.route('/career-openings')

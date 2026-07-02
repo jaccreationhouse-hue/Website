@@ -1,7 +1,9 @@
 import React from 'react';
+import { buildCmsUrl } from '../api/cmsClient';
 
 interface LogoProps {
   name: string;
+  logoUrl?: string;
   isMarquee?: boolean;
 }
 
@@ -27,8 +29,12 @@ function resolveUrl(path: string | undefined): string {
   return `${finalBaseUrl}${cleanPath}`;
 }
 
-export default function CompanyLogo({ name }: LogoProps) {
-  const logoSrc = logoMapping[name] || logoMapping['What Clicks'];
+export default function CompanyLogo({ name, logoUrl }: LogoProps) {
+  const logoSrc = logoUrl || logoMapping[name] || logoMapping['What Clicks'];
+
+  const finalSrc = logoSrc.startsWith('/uploads')
+    ? buildCmsUrl(logoSrc)
+    : resolveUrl(logoSrc);
 
   return (
     <div style={{
@@ -39,7 +45,7 @@ export default function CompanyLogo({ name }: LogoProps) {
       width: '100%'
     }}>
       <img 
-        src={resolveUrl(logoSrc)} 
+        src={finalSrc} 
         alt={name} 
         width="128" 
         height="128" 

@@ -10,6 +10,8 @@ import Program from '../models/Program.js';
 import Activity from '../models/Activity.js';
 import CareerOpening from '../models/CareerOpening.js';
 import CareerApplication from '../models/CareerApplication.js';
+import Highlight from '../models/Highlight.js';
+import ClientLogo from '../models/ClientLogo.js';
 
 // Helper to log activities
 const logActivity = async (action, description) => {
@@ -27,6 +29,8 @@ export const getDashboardStats = async (req, res) => {
     const totalGallery = await Gallery.countDocuments();
     const totalTeam = await Team.countDocuments();
     const totalServices = await Service.countDocuments();
+    const totalHighlights = await Highlight.countDocuments();
+    const totalTrustedCompanies = await ClientLogo.countDocuments();
     const totalBlog = await Blog.countDocuments();
     const totalContacts = await Contact.countDocuments();
 
@@ -50,6 +54,8 @@ export const getDashboardStats = async (req, res) => {
         gallery: totalGallery,
         team: totalTeam,
         services: totalServices,
+        highlights: totalHighlights,
+        trustedCompanies: totalTrustedCompanies,
         blog: totalBlog,
         contacts: totalContacts
       },
@@ -148,7 +154,7 @@ export const deleteGallery = async (req, res) => {
 // Services CRUD
 export const getServices = async (req, res) => {
   try {
-    const data = await Service.find().sort({ createdAt: -1 });
+    const data = await Service.find().sort({ sortOrder: 1, createdAt: -1 });
     res.json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -402,6 +408,90 @@ export const getCareerApplications = async (req, res) => {
   try {
     const data = await CareerApplication.find().sort({ createdAt: -1 });
     res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Highlights CRUD
+export const getHighlights = async (req, res) => {
+  try {
+    const data = await Highlight.find().sort({ sortOrder: 1, createdAt: -1 });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const createHighlight = async (req, res) => {
+  try {
+    const data = await Highlight.create(req.body);
+    await logActivity('Create Highlight', `Highlight "${data.title}" was created.`);
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const updateHighlight = async (req, res) => {
+  try {
+    const data = await Highlight.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!data) return res.status(404).json({ message: 'Highlight not found' });
+    await logActivity('Update Highlight', `Highlight "${data.title}" was updated.`);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const deleteHighlight = async (req, res) => {
+  try {
+    const data = await Highlight.findByIdAndDelete(req.params.id);
+    if (!data) return res.status(404).json({ message: 'Highlight not found' });
+    await logActivity('Delete Highlight', `Highlight "${data.title}" was deleted.`);
+    res.json({ message: 'Highlight deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Trusted Companies CRUD
+export const getClientLogos = async (req, res) => {
+  try {
+    const data = await ClientLogo.find().sort({ sortOrder: 1, createdAt: -1 });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const createClientLogo = async (req, res) => {
+  try {
+    const data = await ClientLogo.create(req.body);
+    await logActivity('Create Trusted Company', `Trusted company "${data.title}" was created.`);
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const updateClientLogo = async (req, res) => {
+  try {
+    const data = await ClientLogo.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!data) return res.status(404).json({ message: 'Trusted company not found' });
+    await logActivity('Update Trusted Company', `Trusted company "${data.title}" was updated.`);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const deleteClientLogo = async (req, res) => {
+  try {
+    const data = await ClientLogo.findByIdAndDelete(req.params.id);
+    if (!data) return res.status(404).json({ message: 'Trusted company not found' });
+    await logActivity('Delete Trusted Company', `Trusted company "${data.title}" was deleted.`);
+    res.json({ message: 'Trusted company deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

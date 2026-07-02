@@ -1,4 +1,5 @@
 import type { CmsCareerApplication, CmsLead, CmsLeadSubmission, CmsService } from './contracts.ts';
+import type { CmsSiteSettings } from './useCmsSettings.ts';
 
 export interface CmsClientOptions {
   baseUrl?: string;
@@ -101,6 +102,6 @@ export async function submitCareerApplication(
 
 export function fetchCmsSettings(
   options: CmsClientOptions = {}
-): Promise<Record<string, Record<string, unknown>>> {
+): Promise<Partial<CmsSiteSettings>> {
   return fetchCmsJson(`/v1/public/sites/${SITE_KEY}/settings`, options);
 }

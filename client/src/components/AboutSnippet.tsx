@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import ScrollReveal from './ScrollReveal';
 import logoImageDark from '../assets/websitelogo_dark.webp';
+import { useCmsSettings } from '../api/useCmsSettings';
 
 export default function AboutSnippet() {
+  const settings = useCmsSettings();
   return (
     <section className="section home-about-section" style={{ padding: '48px 20px', background: 'var(--white)', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
@@ -15,8 +17,8 @@ export default function AboutSnippet() {
               <h2 className="about-brutal-title">About Us</h2>
               <div className="about-brutal-logo-box">
                 <img 
-                  src={logoImageDark} 
-                  alt="JAC Logo Mark" 
+                  src={settings.logoUrl || logoImageDark} 
+                  alt={`${settings.companyName || 'JAC MediaLand'} Logo Mark`} 
                   className="about-brutal-logo-img" 
                   width="96"
                   height="96"

@@ -8,6 +8,7 @@ export interface CmsService {
   capabilities?: string[];
   featured?: boolean;
   status: 'draft' | 'published' | 'archived';
+  sortOrder?: number;
 }
 
 export interface CmsLeadSubmission {

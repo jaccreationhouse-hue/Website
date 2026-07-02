@@ -6,6 +6,7 @@ import {
   FiPhone,
 } from 'react-icons/fi';
 import logoImageDark from '../assets/websitelogo_dark.webp';
+import { useCmsSettings } from '../api/useCmsSettings';
 import { services } from '../data/services';
 
 const primaryLinks = [
@@ -18,6 +19,7 @@ const primaryLinks = [
 ];
 
 export default function Navbar() {
+  const settings = useCmsSettings();
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
   const [isOpen, setIsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -42,14 +44,17 @@ export default function Navbar() {
     return () => window.clearTimeout(closeTimer);
   }, [location.pathname]);
 
+  const companyName = settings.companyName || 'JAC MediaLand';
+  const logoSrc = settings.logoUrl || logoImageDark;
+
   return (
     <>
       <nav aria-label="Primary navigation">
         <div className="nav-inner">
           <Link to="/" className="logo">
-            <img className="logo-mark" src={logoImageDark} alt="JAC MediaLand Logo" />
+            <img className="logo-mark" src={logoSrc} alt={`${companyName} Logo`} />
             <span>
-              <span className="logo-text">JAC MediaLand</span>
+              <span className="logo-text">{companyName}</span>
               <span className="logo-sub">IT Solutions</span>
             </span>
           </Link>

@@ -2,45 +2,53 @@ import { Link } from 'react-router-dom';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 import { FiMail, FiPhoneCall } from 'react-icons/fi';
 import logoImageDark from '../assets/websitelogo_dark.webp';
+import { useCmsSettings } from '../api/useCmsSettings';
 
 export default function Footer() {
+  const settings = useCmsSettings();
+  const companyName = settings.companyName || 'JAC MediaLand';
+  const logoSrc = settings.logoUrl || logoImageDark;
+  const phoneHref = settings.phoneNumber ? `tel:${settings.phoneNumber.replace(/[^\d+]/g, '')}` : 'tel:+917338891367';
+  const footerContent = settings.footerContent || 'Copyright 2026 JAC MediaLand Pvt. Ltd. All rights reserved.';
+  const social = settings.socialMediaLinks;
+
   return (
     <footer className="modern-footer">
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
             <Link to="/" className="logo footer-logo">
-              <img className="logo-mark" src={logoImageDark} alt="JAC MediaLand Logo" />
+              <img className="logo-mark" src={logoSrc} alt={`${companyName} Logo`} />
               <div>
-                <span className="logo-text">JAC MediaLand</span>
+                <span className="logo-text">{companyName}</span>
                 <span className="logo-sub">IT Solutions</span>
               </div>
             </Link>
             <p className="footer-desc">Empowering businesses globally with cutting-edge digital solutions, robust engineering, and seamless user experiences.</p>
             <div className="footer-contact-links">
-              <a href="mailto:jaccreationhouse@gmail.com">
+              <a href={`mailto:${settings.email}`}>
                 <FiMail aria-hidden="true" />
-                <span>jaccreationhouse@gmail.com</span>
+                <span>{settings.email}</span>
               </a>
-              <a href="tel:+917338891367">
+              <a href={phoneHref}>
                 <FiPhoneCall aria-hidden="true" />
-                <span>+91 73388 91367</span>
+                <span>{settings.phoneNumber}</span>
               </a>
             </div>
             <div className="footer-social-card">
-              <a href="https://www.instagram.com/jac_medialand/" target="_blank" rel="noopener noreferrer" aria-label="JAC MediaLand on Instagram" className="fsocial-link fsocial-link--instagram">
+              <a href={social.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${companyName} on Instagram`} className="fsocial-link fsocial-link--instagram">
                 <FaInstagram />
               </a>
-              <a href="https://www.linkedin.com/in/jac-medialand-597111409/" target="_blank" rel="noopener noreferrer" aria-label="JAC MediaLand on LinkedIn" className="fsocial-link fsocial-link--linkedin">
+              <a href={social.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${companyName} on LinkedIn`} className="fsocial-link fsocial-link--linkedin">
                 <FaLinkedinIn />
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61586776786162" target="_blank" rel="noopener noreferrer" aria-label="JAC MediaLand on Facebook" className="fsocial-link fsocial-link--facebook">
+              <a href={social.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${companyName} on Facebook`} className="fsocial-link fsocial-link--facebook">
                 <FaFacebookF />
               </a>
-              <a href="https://x.com/vjcharles_off" target="_blank" rel="noopener noreferrer" aria-label="JAC MediaLand on X" className="fsocial-link fsocial-link--twitter">
+              <a href={social.twitter} target="_blank" rel="noopener noreferrer" aria-label={`${companyName} on X`} className="fsocial-link fsocial-link--twitter">
                 <FaXTwitter />
               </a>
-              <a href="https://wa.me/917338891367" target="_blank" rel="noopener noreferrer" aria-label="Contact JAC MediaLand on WhatsApp" className="fsocial-link fsocial-link--whatsapp">
+              <a href={`https://wa.me/${(settings.phoneNumber || '+917338891367').replace(/[^\d]/g, '')}`} target="_blank" rel="noopener noreferrer" aria-label={`Contact ${companyName} on WhatsApp`} className="fsocial-link fsocial-link--whatsapp">
                 <FaWhatsapp />
               </a>
             </div>
@@ -90,7 +98,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>Copyright 2026 JAC MediaLand Pvt. Ltd. All rights reserved.</span>
+          <span>{footerContent}</span>
           <button className="back-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15" /></svg>
           </button>

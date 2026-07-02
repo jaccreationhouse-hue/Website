@@ -10,11 +10,15 @@ export default function GoogleAnalytics() {
     loadWithFallback(() => fetchCmsSettings(), {})
       .then((settings) => {
         if (!mounted) return;
-        
-        // Extract analyticsId from the site.seo namespace
-        const seoSettings = settings['site.seo'] as Record<string, string> | undefined;
-        if (seoSettings?.analyticsId) {
-          setAnalyticsId(seoSettings.analyticsId);
+
+        const analyticsCandidate = settings as { analyticsId?: string; ['site.seo']?: { analyticsId?: string } };
+        if (analyticsCandidate.analyticsId) {
+          setAnalyticsId(analyticsCandidate.analyticsId);
+          return;
+        }
+
+        if (analyticsCandidate['site.seo']?.analyticsId) {
+          setAnalyticsId(analyticsCandidate['site.seo'].analyticsId);
         }
       })
       .catch(console.error);

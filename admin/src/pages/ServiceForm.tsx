@@ -118,26 +118,49 @@ const ServiceForm: React.FC = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
+  const [slug, setSlug] = useState('');
   const [icon, setIcon] = useState('FaCode');
+  const [subtitle, setSubtitle] = useState('');
+  const [tagline, setTagline] = useState('');
   const [description, setDescription] = useState('');
+  const [capabilities, setCapabilities] = useState('');
+  const [featured, setFeatured] = useState(false);
+  const [status, setStatus] = useState('published');
+  const [sortOrder, setSortOrder] = useState('0');
   const [createdDate, setCreatedDate] = useState(new Date().toISOString().substring(0, 10));
 
   useEffect(() => {
     if (id && location.state?.service) {
       const srv = location.state.service;
       setName(srv.name);
+      setSlug(srv.slug || '');
       setIcon(srv.icon || 'FaCode');
+      setSubtitle(srv.subtitle || '');
+      setTagline(srv.tagline || '');
       setDescription(srv.description);
+      setCapabilities(Array.isArray(srv.capabilities) ? srv.capabilities.join(', ') : '');
+      setFeatured(Boolean(srv.featured));
+      setStatus(srv.status || 'published');
+      setSortOrder(String(srv.sortOrder ?? 0));
       setCreatedDate(srv.createdDate ? srv.createdDate.substring(0, 10) : new Date().toISOString().substring(0, 10));
     }
   }, [id, location]);
+
+  const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload = {
       name,
+      slug: slugify(slug || name),
       icon,
+      subtitle,
+      tagline,
       description,
+      capabilities: capabilities.split(',').map((item) => item.trim()).filter(Boolean),
+      featured,
+      status,
+      sortOrder: Number(sortOrder || 0),
       createdDate
     };
 
@@ -172,7 +195,15 @@ const ServiceForm: React.FC = () => {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label>Service Name</Label>
-            <Input type="text" value={name} onChange={e => setName(e.target.value)} required />
+            <Input type="text" value={name} onChange={e => {
+              setName(e.target.value);
+              if (!id) setSlug(slugify(e.target.value));
+            }} required />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Slug</Label>
+            <Input type="text" value={slug} onChange={e => setSlug(slugify(e.target.value))} required />
           </FormGroup>
           
           <FormGroup>
@@ -184,10 +215,46 @@ const ServiceForm: React.FC = () => {
             </Label>
             <Input type="text" value={icon} onChange={e => setIcon(e.target.value)} required placeholder="FaCode" />
           </FormGroup>
+
+          <FormGroup>
+            <Label>Subtitle</Label>
+            <Input type="text" value={subtitle} onChange={e => setSubtitle(e.target.value)} placeholder="Brand identity and visual systems" />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Tagline</Label>
+            <Input type="text" value={tagline} onChange={e => setTagline(e.target.value)} placeholder="Creative designs. Powerful impact." />
+          </FormGroup>
           
           <FormGroup>
             <Label>Description</Label>
             <TextArea value={description} onChange={e => setDescription(e.target.value)} required />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Capabilities (comma separated)</Label>
+            <Input type="text" value={capabilities} onChange={e => setCapabilities(e.target.value)} placeholder="Brand Identity, Campaign Design, Creative Systems" />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Status</Label>
+            <select value={status} onChange={e => setStatus(e.target.value)} style={{ padding: '0.6rem 0.8rem', borderRadius: 8 }}>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+              <option value="archived">Archived</option>
+            </select>
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Sort Order</Label>
+            <Input type="number" value={sortOrder} onChange={e => setSortOrder(e.target.value)} />
+          </FormGroup>
+
+          <FormGroup>
+            <Label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+              <input type="checkbox" checked={featured} onChange={e => setFeatured(e.target.checked)} />
+              Featured service
+            </Label>
           </FormGroup>
           
           <FormGroup>

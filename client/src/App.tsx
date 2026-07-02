@@ -5,6 +5,7 @@ import Navbar from './layout/Navbar';
 import Footer from './layout/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
+import SiteSettingsBridge from './components/SiteSettingsBridge';
 import Home from './pages/Home';
 import './index.css';
 
@@ -42,6 +43,7 @@ function Layout() {
     <>
       <FloatingWhatsApp />
       <ScrollToTop />
+      <SiteSettingsBridge />
       {!isFullscreen && <Navbar />}
       <Suspense fallback={<div className="route-loading" aria-hidden="true" />}>
         <Routes>

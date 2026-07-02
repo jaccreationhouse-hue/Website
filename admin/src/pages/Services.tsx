@@ -85,6 +85,24 @@ const ServiceDesc = styled.p`
   overflow: hidden;
 `;
 
+const BadgeRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+`;
+
+const Badge = styled.span<{ $tone?: 'active' | 'muted' }>`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: ${({ $tone }) => $tone === 'active' ? 'rgba(34, 197, 94, 0.12)' : 'rgba(148, 163, 184, 0.16)'};
+  color: ${({ $tone }) => $tone === 'active' ? '#22c55e' : '#94a3b8'};
+`;
+
 const MetaInfo = styled.div`
   font-size: 0.8rem;
   color: ${({ theme }) => theme.textLight};
@@ -201,10 +219,15 @@ const Services: React.FC = () => {
               </IconPreview>
               
               <ServiceTitle>{srv.name}</ServiceTitle>
+              <BadgeRow>
+                <Badge $tone={srv.status === 'published' ? 'active' : 'muted'}>{srv.status || 'published'}</Badge>
+                {srv.featured && <Badge>Featured</Badge>}
+              </BadgeRow>
               <ServiceDesc>{srv.description}</ServiceDesc>
               
               <MetaInfo>
-                <span>Created: {srv.createdDate ? new Date(srv.createdDate).toLocaleDateString() : 'N/A'}</span>
+                <span>Slug: {srv.slug || 'auto-generated'}</span>
+                <span>Order: {srv.sortOrder ?? 0}</span>
               </MetaInfo>
             </GlassCard>
           ))}

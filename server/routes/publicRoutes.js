@@ -12,6 +12,8 @@ import Program from '../models/Program.js';
 import Activity from '../models/Activity.js';
 import CareerOpening from '../models/CareerOpening.js';
 import CareerApplication from '../models/CareerApplication.js';
+import Highlight from '../models/Highlight.js';
+import ClientLogo from '../models/ClientLogo.js';
 import { uploadBufferToCloudinary } from '../config/cloudinary.js';
 
 const router = express.Router();
@@ -48,6 +50,10 @@ function toCareerOpeningItem(opening) {
   };
 }
 
+function toSlug(value = '') {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+}
+
 // Helper to log activities
 const logActivity = async (action, description) => {
   try {
@@ -60,14 +66,23 @@ const logActivity = async (action, description) => {
 // 1. Get Services
 router.get('/v1/public/sites/:siteKey/services', async (req, res) => {
   try {
-    const services = await Service.find().sort({ createdAt: 1 });
-    // Map to client format if necessary
+    const services = await Service.find({
+      $or: [
+        { status: 'published' },
+        { status: { $exists: false } }
+      ]
+    }).sort({ sortOrder: 1, createdAt: 1 });
     const mapped = services.map(s => ({
       id: s._id,
-      slug: s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      slug: s.slug || toSlug(s.name),
       title: s.name,
+      subtitle: s.subtitle || '',
+      tagline: s.tagline || '',
       description: s.description,
-      status: 'published'
+      capabilities: Array.isArray(s.capabilities) ? s.capabilities : [],
+      featured: s.featured || false,
+      status: s.status || 'published',
+      sortOrder: s.sortOrder || 0
     }));
     res.json(mapped);
   } catch (error) {
@@ -92,6 +107,27 @@ router.get('/v1/public/sites/:siteKey/collections/:collectionKey', async (req, r
         visual: p.thumbnailImage || '',
         status: 'published'
       }));
+    } else if (collectionKey === 'highlights') {
+      const highlights = await Highlight.find({ status: 'published' }).sort({ sortOrder: 1, createdAt: -1 });
+      items = highlights.map((item) => ({
+        id: item._id,
+        slug: item.slug,
+        title: item.title,
+        value: item.value,
+        status: item.status,
+        sortOrder: item.sortOrder || 0
+      }));
+    } else if (collectionKey === 'trustedCompanies' || collectionKey === 'clientLogos') {
+      const logos = await ClientLogo.find({ status: 'published' }).sort({ sortOrder: 1, createdAt: -1 });
+      items = logos.map((item) => ({
+        id: item._id,
+        slug: item.slug,
+        title: item.title,
+        logoUrl: item.logoUrl,
+        website: item.website || '',
+        status: item.status,
+        sortOrder: item.sortOrder || 0
+      }));
     } else if (collectionKey === 'gallery') {
       items = await Gallery.find().sort({ createdAt: -1 });
     } else if (collectionKey === 'team' || collectionKey === 'teamMembers') {
@@ -109,7 +145,12 @@ router.get('/v1/public/sites/:siteKey/collections/:collectionKey', async (req, r
     } else if (collectionKey === 'blogs' || collectionKey === 'posts') {
       items = await Blog.find({ status: 'Published' }).sort({ createdAt: -1 });
     } else if (collectionKey === 'programs') {
-      const programs = await Program.find().sort({ createdAt: 1 });
+      const programs = await Program.find({
+        $or: [
+          { status: 'published' },
+          { status: { $exists: false } }
+        ]
+      }).sort({ createdAt: 1 });
       items = programs.map(p => ({
         id: p._id,
         slug: p.slug || p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),

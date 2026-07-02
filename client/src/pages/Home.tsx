@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import { useCmsCollection } from '../api/useCmsCollection';
-import { fallbackHighlights, type HighlightItem } from '../data/cmsSections';
+import { fetchCmsServices } from '../api/cmsClient';
+import { fallbackHighlights, fallbackTrustedCompanies, type HighlightItem, type TrustedCompanyItem } from '../data/cmsSections';
 import { DoodlePro } from '../components/DoodlePro.tsx';
 import CompanyLogo from '../components/CompanyLogos';
 
@@ -36,7 +37,7 @@ import {
   FiExternalLink
 } from 'react-icons/fi';
 
-import { services } from '../data/services';
+import { mergeCmsServices, services } from '../data/services';
 
 function shouldDeferHomeSections() {
   return typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches;
@@ -47,6 +48,11 @@ export default function Home() {
     deferUntilIdle: true,
     deferDelayMs: 6000,
   });
+  const trustedCompanies = useCmsCollection<TrustedCompanyItem>('trustedCompanies', fallbackTrustedCompanies, {
+    deferUntilIdle: true,
+    deferDelayMs: 7000,
+  });
+  const [serviceCatalogue, setServiceCatalogue] = useState(services);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isAboutFlipped, setIsAboutFlipped] = useState(false);
   const [showDeferredSections, setShowDeferredSections] = useState(() => !shouldDeferHomeSections());
@@ -87,6 +93,12 @@ export default function Home() {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isVideoModalOpen]);
+
+  useEffect(() => {
+    void fetchCmsServices()
+      .then((cmsServices) => setServiceCatalogue(mergeCmsServices(cmsServices)))
+      .catch(() => setServiceCatalogue(services));
+  }, []);
 
   return (
     <div className="page" style={{ display: 'block' }}>
@@ -371,7 +383,7 @@ export default function Home() {
           </ScrollReveal>
           
           <div className="what-we-do-clean-grid">
-            {services.map((service, idx) => (
+            {serviceCatalogue.map((service, idx) => (
               <ScrollReveal key={service.title} direction="up" delay={(idx % 3) * 80}>
                 <div className="what-we-do-clean-card">
                   <span className="what-we-do-clean-icon"><service.Icon size={32} /></span>
@@ -558,18 +570,9 @@ export default function Home() {
         <div className="trusted-marquee-container">
           <div className="trusted-marquee-row marquee-left">
             <div className="trusted-marquee-track">
-              {[
-                'What Clicks', 'VS Dental', 'Credia Mediations', 'Thoospot', 'Tetra Platfms',
-                'PRN Construction', 'P Inc.', 'Pharach', 'Car Decore', 'Pandiyan Agency',
-                'What Clicks', 'VS Dental', 'Credia Mediations', 'Thoospot', 'Tetra Platfms',
-                'PRN Construction', 'P Inc.', 'Pharach', 'Car Decore', 'Pandiyan Agency',
-                'What Clicks', 'VS Dental', 'Credia Mediations', 'Thoospot', 'Tetra Platfms',
-                'PRN Construction', 'P Inc.', 'Pharach', 'Car Decore', 'Pandiyan Agency',
-                'What Clicks', 'VS Dental', 'Credia Mediations', 'Thoospot', 'Tetra Platfms',
-                'PRN Construction', 'P Inc.', 'Pharach', 'Car Decore', 'Pandiyan Agency'
-              ].map((company, idx) => (
-                <div key={`${company}-r1-${idx}`} className="trusted-logo-card">
-                  <CompanyLogo name={company} isMarquee={true} />
+              {[...trustedCompanies, ...trustedCompanies, ...trustedCompanies].map((company, idx) => (
+                <div key={`${company.slug}-${idx}`} className="trusted-logo-card">
+                  <CompanyLogo name={company.title} logoUrl={company.logoUrl} isMarquee={true} />
                 </div>
               ))}
             </div>

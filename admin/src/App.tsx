@@ -15,6 +15,10 @@ import Contacts from './pages/Contacts';
 import Settings from './pages/Settings';
 import Programs from './pages/Programs';
 import ProgramForm from './pages/ProgramForm';
+import Highlights from './pages/Highlights';
+import HighlightForm from './pages/HighlightForm';
+import TrustedCompanies from './pages/TrustedCompanies';
+import TrustedCompanyForm from './pages/TrustedCompanyForm';
 import CareerOpenings from './pages/CareerOpenings';
 import CareerOpeningForm from './pages/CareerOpeningForm';
 import CareerApplications from './pages/CareerApplications';
@@ -162,6 +166,12 @@ const App: React.FC = () => {
               </ProtectedRoute>
             } 
           />
+          <Route path="/highlights" element={<ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Highlights /></ProtectedRoute>} />
+          <Route path="/highlights/new" element={<ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}><HighlightForm /></ProtectedRoute>} />
+          <Route path="/highlights/edit/:id" element={<ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}><HighlightForm /></ProtectedRoute>} />
+          <Route path="/trusted-companies" element={<ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}><TrustedCompanies /></ProtectedRoute>} />
+          <Route path="/trusted-companies/new" element={<ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}><TrustedCompanyForm /></ProtectedRoute>} />
+          <Route path="/trusted-companies/edit/:id" element={<ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}><TrustedCompanyForm /></ProtectedRoute>} />
           <Route
             path="/career-openings"
             element={

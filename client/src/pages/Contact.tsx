@@ -13,6 +13,7 @@ import ScrollReveal from '../components/ScrollReveal';
 import { createWhatsAppGreeting, createWhatsAppUrl } from '../utils/whatsapp';
 import { submitCmsLead } from '../api/cmsClient';
 import { fallbackContacts } from '../data/cmsSections';
+import { useCmsSettings } from '../api/useCmsSettings';
 import { saveFormBackup, loadFormBackup, clearFormBackup } from '../utils/formBackup';
 
 const CONTACT_FORM_KEY = 'contact';
@@ -20,8 +21,16 @@ const CONTACT_FORM_KEY = 'contact';
 type ContactFormData = { name: string; email: string; phone: string; subject: string; message: string };
 
 export default function Contact() {
+  const settings = useCmsSettings();
   const contacts = fallbackContacts;
-  const contact = contacts[0] ?? fallbackContacts[0];
+  const contactBase = contacts[0] ?? fallbackContacts[0];
+  const contact = {
+    ...contactBase,
+    email: settings.email || contactBase.email,
+    phone: settings.phoneNumber || contactBase.phone,
+    phoneHref: settings.phoneNumber ? `tel:${settings.phoneNumber.replace(/[^\d+]/g, '')}` : contactBase.phoneHref,
+    address: settings.address || contactBase.address
+  };
   const [formData, setFormData] = useState<ContactFormData>(() => {
     const saved = loadFormBackup<ContactFormData>(CONTACT_FORM_KEY);
     return saved ?? { name: '', email: '', phone: '', subject: '', message: '' };

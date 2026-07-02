@@ -10,6 +10,11 @@ export interface HighlightItem extends CmsSectionItem {
   value: string;
 }
 
+export interface TrustedCompanyItem extends CmsSectionItem {
+  logoUrl: string;
+  website?: string;
+}
+
 export interface TeamMemberItem extends CmsSectionItem {
   role: string;
   image?: string;
@@ -63,6 +68,19 @@ export const fallbackHighlights: HighlightItem[] = [
   { slug: 'projects', title: 'Projects', value: '2,300+' },
   { slug: 'happy-clients', title: 'Happy Clients', value: '3,000+' },
   { slug: 'smartmates', title: 'SmartMates', value: '30' }
+];
+
+export const fallbackTrustedCompanies: TrustedCompanyItem[] = [
+  { slug: 'what-clicks', title: 'What Clicks', logoUrl: '/logos_opt/1.webp', website: '' },
+  { slug: 'vs-dental', title: 'VS Dental', logoUrl: '/logos_opt/2.webp', website: '' },
+  { slug: 'credia-mediations', title: 'Credia Mediations', logoUrl: '/logos_opt/3.webp', website: '' },
+  { slug: 'thoospot', title: 'Thoospot', logoUrl: '/logos_opt/4.webp', website: '' },
+  { slug: 'tetra-platfms', title: 'Tetra Platfms', logoUrl: '/logos_opt/5.webp', website: '' },
+  { slug: 'prn-construction', title: 'PRN Construction', logoUrl: '/logos_opt/6.webp', website: '' },
+  { slug: 'p-inc', title: 'P Inc.', logoUrl: '/logos_opt/7.webp', website: '' },
+  { slug: 'pharach', title: 'Pharach', logoUrl: '/logos_opt/8.webp', website: '' },
+  { slug: 'car-decore', title: 'Car Decore', logoUrl: '/logos_opt/9.webp', website: '' },
+  { slug: 'pandiyan-agency', title: 'Pandiyan Agency', logoUrl: '/logos_opt/10.webp', website: '' }
 ];
 
 export const fallbackTeamMembers: TeamMemberItem[] = [
