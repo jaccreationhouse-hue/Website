@@ -75,11 +75,11 @@ export const fallbackTeamMembers: TeamMemberItem[] = [
     message: 'Building a team where thoughtful ideas, bold creativity, and dependable execution come together to create work that matters.'
   },
   { slug: 'dharanidhran-p', title: 'DHARANIDHRAN P', role: 'HR & MANAGER', image: 'dharanidhran.png' },
-  { slug: 'kapeesh-s', title: 'KAPEESH S', role: 'TEAM LEAD', image: 'kapeesh.png' },
-  { slug: 'gowshik-s', title: 'GOWSHIK S', role: 'DEVELOPER', image: 'gowshik.png' },
-  { slug: 'mohan-raj-p', title: 'MOHAN RAJ P', role: 'UI UX DESIGNER', image: 'mohan.png' },
-  { slug: 'sahaya-stephen-s', title: 'SAHAYA STEPHEN S', role: 'DATA ANALYST', image: 'stephen.png' },
-  { slug: 'vinodh-t', title: 'VINODH T', role: 'DEVELOPER', image: 'vinodh.png' },
+  { slug: 'kapeesh-s', title: 'KAPEESH S', role: 'TEAM LEAD', image: 'kapeesh.JPG' },
+  { slug: 'gowshik-s', title: 'GOWSHIK S', role: 'DEVELOPER', image: 'gowsi.jpeg' },
+  { slug: 'mohan-raj-p', title: 'MOHAN RAJ P', role: 'UI UX DESIGNER', image: 'mohan.jpeg' },
+  { slug: 'sahaya-stephen-s', title: 'SAHAYA STEPHEN S', role: 'DATA ANALYST', image: 'stephen.jpeg' },
+  { slug: 'vinodh-t', title: 'VINODH T', role: 'DEVELOPER', image: 'vno.jpeg' },
   { slug: 'nithya-sree-m', title: 'Nithya Sree M', role: 'Social Media Management', image: 'nithya.png' }
 ];
 
