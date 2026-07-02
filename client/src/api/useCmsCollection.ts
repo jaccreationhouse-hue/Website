@@ -15,7 +15,13 @@ export function useCmsCollectionState<T>(collectionKey: string, fallback: T[]) {
     void fetchCmsCollection<T>(collectionKey)
       .then((records) => {
         if (active) {
-          setItems(records);
+          // If backend returns an empty array but we have fallback data,
+          // it likely means the backend route is missing or DB is empty. Use fallback.
+          if (Array.isArray(records) && records.length === 0 && fallback.length > 0) {
+            setItems(fallback);
+          } else {
+            setItems(records);
+          }
           setError('');
         }
       })
