@@ -18,6 +18,9 @@ export default defineConfig({
           if (id.includes('node_modules/react-icons')) {
             return 'vendor-icons';
           }
+          if (id.includes('node_modules/styled-components')) {
+            return 'vendor-styled';
+          }
         }
       }
     }

@@ -5,17 +5,25 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/webp" href="%BASE_URL%favicon.webp" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZPVXPPH73"></script>
+  <!-- Google tag (gtag.js) deferred for performance -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-9ZPVXPPH73';
+        document.head.appendChild(script);
 
-    gtag('config', 'G-9ZPVXPPH73');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9ZPVXPPH73');
+      }, 2000); // Wait 2s after load to ensure no interference with interaction
+    });
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
   <meta name="description"
     content="JAC MediaLand - A youth-powered creative and technology company building thoughtful digital experiences with clarity, precision, and purpose." />
   <meta name="keywords"
