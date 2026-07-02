@@ -10,7 +10,7 @@ const careerApplicationSchema = new mongoose.Schema({
   profileUrl: { type: String, default: '', trim: true },
   coverLetter: { type: String, required: true, trim: true },
   source: { type: String, default: 'website', trim: true },
-  idempotencyKey: { type: String, default: '', trim: true, index: true },
+  idempotencyKey: { type: String, default: '', trim: true },
   resumeUrl: { type: String, default: '', trim: true },
   resumeOriginalName: { type: String, default: '', trim: true },
   status: {
