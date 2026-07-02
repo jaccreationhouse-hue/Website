@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import {
   FiArrowRight,
   FiCheckCircle,
@@ -14,18 +14,25 @@ import { createWhatsAppGreeting, createWhatsAppUrl } from '../utils/whatsapp';
 import { submitCmsLead } from '../api/cmsClient';
 import { useCmsCollection } from '../api/useCmsCollection';
 import { fallbackContacts, type ContactItem } from '../data/cmsSections';
+import { saveFormBackup, loadFormBackup, clearFormBackup } from '../utils/formBackup';
+
+const CONTACT_FORM_KEY = 'contact';
+
+type ContactFormData = { name: string; email: string; phone: string; subject: string; message: string };
 
 export default function Contact() {
   const contacts = fallbackContacts;
   const contact = contacts[0] ?? fallbackContacts[0];
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
+  const [formData, setFormData] = useState<ContactFormData>(() => {
+    const saved = loadFormBackup<ContactFormData>(CONTACT_FORM_KEY);
+    return saved ?? { name: '', email: '', phone: '', subject: '', message: '' };
   });
   const [status, setStatus] = useState('');
+
+  // Auto-save form data to localStorage on every change
+  useEffect(() => {
+    saveFormBackup(CONTACT_FORM_KEY, formData);
+  }, [formData]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -50,6 +57,7 @@ export default function Contact() {
       persisted = false;
     }
     window.open(createWhatsAppUrl(formData), '_blank', 'noopener,noreferrer');
+    clearFormBackup(CONTACT_FORM_KEY);
     setStatus(persisted
       ? 'Your enquiry was saved and WhatsApp opened. Review the prepared message and tap Send to contact us.'
       : 'WhatsApp opened with your enquiry. The CMS was unavailable, so review the prepared message and tap Send to contact us.');

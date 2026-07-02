@@ -3,22 +3,28 @@ import { useParams } from 'react-router-dom';
 import { fetchCmsServices } from '../api/cmsClient';
 import ServiceDetailPage from '../components/ServiceDetailPage';
 import { buildGenericServiceDetail } from '../data/cmsServiceDetail';
-import { mergeCmsServices, type ServiceDefinition } from '../data/services';
+import { mergeCmsServices, services, type ServiceDefinition } from '../data/services';
 import NotFound from './NotFound';
 
 export default function CmsServiceDetail() {
   const { slug = '' } = useParams();
-  const [service, setService] = useState<ServiceDefinition>();
+  const localService = services.find((item) => item.path === `/services/${slug}`);
+  const [service, setService] = useState<ServiceDefinition | undefined>(localService);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     void fetchCmsServices()
       .then((records) => {
-        setService(mergeCmsServices(records).find((item) => item.path === `/services/${slug}`));
+        const found = mergeCmsServices(records).find((item) => item.path === `/services/${slug}`);
+        // If CMS returned data but this slug isn't in it, fall back to local
+        setService(found ?? localService);
       })
-      .catch(() => setService(undefined))
+      .catch(() => {
+        // Backend failed — use local catalogue so user sees content, not a 404
+        setService(localService);
+      })
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, localService]);
 
   if (loading) {
     return (
@@ -40,3 +46,4 @@ export default function CmsServiceDetail() {
     />
   );
 }
+

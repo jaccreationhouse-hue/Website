@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { 
   FaTachometerAlt, FaFolderOpen, FaConciergeBell, 
   FaUsers, FaEnvelope, FaSlidersH, 
-  FaSignOutAlt, FaSun, FaMoon, FaBars, FaTimes, FaGraduationCap 
+  FaSignOutAlt, FaSun, FaMoon, FaBars, FaTimes, FaGraduationCap
 } from 'react-icons/fa';
 
 interface SidebarProps {

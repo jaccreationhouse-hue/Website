@@ -80,10 +80,7 @@ export const fallbackTeamMembers: TeamMemberItem[] = [
   { slug: 'mohan-raj-p', title: 'MOHAN RAJ P', role: 'UI UX DESIGNER', image: 'mohan.png' },
   { slug: 'sahaya-stephen-s', title: 'SAHAYA STEPHEN S', role: 'DATA ANALYST', image: 'stephen.png' },
   { slug: 'vinodh-t', title: 'VINODH T', role: 'DEVELOPER', image: 'vinodh.png' },
-  { slug: 'mounika-v-m', title: 'MOUNIKA V M', role: 'SOCIAL MEDIA MANAGER', image: 'mounika.png' },
-  { slug: 'nithya-sree-m', title: 'Nithya Sree M', role: 'Social Media Management', image: 'nithya.png' },
-  { slug: 'aswinprabu', title: 'Aswinprabu', role: 'Digital Marketing', image: 'aswin.png' },
-  { slug: 'mugesh', title: 'Mugesh', role: 'Digital Marketing', image: 'mugesh.png' }
+  { slug: 'nithya-sree-m', title: 'Nithya Sree M', role: 'Social Media Management', image: 'nithya.png' }
 ];
 
 export const fallbackPortfolioProjects: PortfolioProjectItem[] = [
@@ -91,20 +88,20 @@ export const fallbackPortfolioProjects: PortfolioProjectItem[] = [
   { slug: 'travel-agency', title: 'Travel Agency', industry: 'Travel', category: 'development', url: 'https://travel-agency-livid-delta.vercel.app/', visual: 'portfolio-visual-travel' },
   { slug: 'real-estate', title: 'Real Estate', industry: 'Property', category: 'development', url: 'https://real-estate-delta-lake.vercel.app/', visual: 'portfolio-visual-estate' },
   { slug: 'chartered-accountants', title: 'Chartered Accountants', industry: 'Professional services', category: 'development', url: 'https://chartered-accountant-website-opal.vercel.app/', visual: 'portfolio-visual-accountants' },
-  { slug: 'logo-1', title: 'TM Brand Identity', industry: 'Corporate', category: 'logo', url: '/logos/1.webp', visual: '/logos/1.webp' },
-  { slug: 'logo-2', title: 'Kidhev Logo', industry: 'Healthcare', category: 'logo', url: '/logos/2.webp', visual: '/logos/2.webp' },
-  { slug: 'logo-3', title: 'Ww- Design', industry: 'Creative', category: 'logo', url: '/logos/3.webp', visual: '/logos/3.webp' },
-  { slug: 'logo-4', title: 'GOTFYD Branding', industry: 'Marketing', category: 'logo', url: '/logos/4.webp', visual: '/logos/4.webp' },
-  { slug: 'logo-5', title: 'Toilal ELE Logo', industry: 'Industrial', category: 'logo', url: '/logos/5.webp', visual: '/logos/5.webp' },
-  { slug: 'logo-6', title: 'Uunet Wordmark', industry: 'Technology', category: 'logo', url: '/logos/6.webp', visual: '/logos/6.webp' },
-  { slug: 'logo-7', title: 'HlGA Brand Identity', industry: 'Media', category: 'logo', url: '/logos/7.webp', visual: '/logos/7.webp' },
-  { slug: 'logo-8', title: 'NM Monogram', industry: 'Creative', category: 'logo', url: '/logos/8.webp', visual: '/logos/8.webp' },
-  { slug: 'logo-9', title: 'Level Up Learning', industry: 'Education', category: 'logo', url: '/logos/9.webp', visual: '/logos/9.webp' },
-  { slug: 'logo-10', title: 'JAC Creative Brand', industry: 'Services', category: 'logo', url: '/logos/10.webp', visual: '/logos/10.webp' },
-  { slug: 'logo-11', title: 'Lvel Design Logo', industry: 'Wellness', category: 'logo', url: '/logos/11.webp', visual: '/logos/11.webp' },
-  { slug: 'logo-12', title: 'Corporate Emblem', industry: 'Finance', category: 'logo', url: '/logos/12.webp', visual: '/logos/12.webp' },
-  { slug: 'logo-13', title: 'Upwork Identity', industry: 'Technology', category: 'logo', url: '/logos/13.webp', visual: '/logos/13.webp' },
-  { slug: 'logo-14', title: 'VVM Traders', industry: 'Agriculture', category: 'logo', url: '/logos/14.webp', visual: '/logos/14.webp' }
+  { slug: 'logo-1', title: 'TM Brand Identity', industry: 'Corporate', category: 'logo', url: '/logos_opt/1.webp', visual: '/logos_opt/1.webp' },
+  { slug: 'logo-2', title: 'Kidhev Logo', industry: 'Healthcare', category: 'logo', url: '/logos_opt/2.webp', visual: '/logos_opt/2.webp' },
+  { slug: 'logo-3', title: 'Ww- Design', industry: 'Creative', category: 'logo', url: '/logos_opt/3.webp', visual: '/logos_opt/3.webp' },
+  { slug: 'logo-4', title: 'GOTFYD Branding', industry: 'Marketing', category: 'logo', url: '/logos_opt/4.webp', visual: '/logos_opt/4.webp' },
+  { slug: 'logo-5', title: 'Toilal ELE Logo', industry: 'Industrial', category: 'logo', url: '/logos_opt/5.webp', visual: '/logos_opt/5.webp' },
+  { slug: 'logo-6', title: 'Uunet Wordmark', industry: 'Technology', category: 'logo', url: '/logos_opt/6.webp', visual: '/logos_opt/6.webp' },
+  { slug: 'logo-7', title: 'HlGA Brand Identity', industry: 'Media', category: 'logo', url: '/logos_opt/7.webp', visual: '/logos_opt/7.webp' },
+  { slug: 'logo-8', title: 'NM Monogram', industry: 'Creative', category: 'logo', url: '/logos_opt/8.webp', visual: '/logos_opt/8.webp' },
+  { slug: 'logo-9', title: 'Level Up Learning', industry: 'Education', category: 'logo', url: '/logos_opt/9.webp', visual: '/logos_opt/9.webp' },
+  { slug: 'logo-10', title: 'JAC Creative Brand', industry: 'Services', category: 'logo', url: '/logos_opt/10.webp', visual: '/logos_opt/10.webp' },
+  { slug: 'logo-11', title: 'Lvel Design Logo', industry: 'Wellness', category: 'logo', url: '/logos_opt/11.webp', visual: '/logos_opt/11.webp' },
+  { slug: 'logo-12', title: 'Corporate Emblem', industry: 'Finance', category: 'logo', url: '/logos_opt/12.webp', visual: '/logos_opt/12.webp' },
+  { slug: 'logo-13', title: 'Upwork Identity', industry: 'Technology', category: 'logo', url: '/logos_opt/13.webp', visual: '/logos_opt/13.webp' },
+  { slug: 'logo-14', title: 'VVM Traders', industry: 'Agriculture', category: 'logo', url: '/logos_opt/14.webp', visual: '/logos_opt/14.webp' }
 ];
 
 export const fallbackPrograms: ProgramItem[] = [

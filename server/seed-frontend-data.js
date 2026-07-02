@@ -18,10 +18,7 @@ const fallbackTeamMembers = [
   { slug: 'mohan-raj-p', title: 'MOHAN RAJ P', role: 'UI UX DESIGNER', image: 'mohan.png' },
   { slug: 'sahaya-stephen-s', title: 'SAHAYA STEPHEN S', role: 'DATA ANALYST', image: 'stephen.png' },
   { slug: 'vinodh-t', title: 'VINODH T', role: 'DEVELOPER', image: 'vinodh.png' },
-  { slug: 'mounika-v-m', title: 'MOUNIKA V M', role: 'SOCIAL MEDIA MANAGER', image: 'mounika.png' },
-  { slug: 'nithya-sree-m', title: 'Nithya Sree M', role: 'Social Media Management', image: 'nithya.png' },
-  { slug: 'aswinprabu', title: 'Aswinprabu', role: 'Digital Marketing', image: 'aswin.png' },
-  { slug: 'mugesh', title: 'Mugesh', role: 'Digital Marketing', image: 'mugesh.png' }
+  { slug: 'nithya-sree-m', title: 'Nithya Sree M', role: 'Social Media Management', image: 'nithya.png' }
 ];
 
 const fallbackPortfolioProjects = [

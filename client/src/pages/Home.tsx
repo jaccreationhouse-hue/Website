@@ -44,7 +44,7 @@ import {
 import { services } from '../data/services';
 
 export default function Home() {
-  const highlights = fallbackHighlights;
+  const highlights = useCmsCollection<HighlightItem>('highlights', fallbackHighlights);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isAboutFlipped, setIsAboutFlipped] = useState(false);
 

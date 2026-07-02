@@ -4,6 +4,7 @@ import { FiArrowRight, FiFileText, FiSend } from 'react-icons/fi';
 import { submitCareerApplication } from '../api/cmsClient';
 import { isGeneralCareerOpening } from '../data/careers';
 import type { CareerOpeningItem } from '../data/cmsSections';
+import { saveFormBackup, loadFormBackup, clearFormBackup } from '../utils/formBackup';
 
 const acceptedResumeTypes = [
   'application/pdf',
@@ -14,6 +15,9 @@ const maxResumeSize = 5 * 1024 * 1024;
 
 type MessageKind = 'idle' | 'progress' | 'error' | 'success';
 
+type CareerFormFields = { name: string; email: string; phone: string; experience: string; profileUrl: string; coverLetter: string };
+const CAREER_FORM_KEY = 'career_application';
+
 export default function CareerApplicationForm({ opening }: { opening?: CareerOpeningItem }) {
   const idempotencyKey = useRef(crypto.randomUUID());
   const messageRef = useRef<HTMLParagraphElement>(null);
@@ -22,6 +26,25 @@ export default function CareerApplicationForm({ opening }: { opening?: CareerOpe
   const [submitting, setSubmitting] = useState(false);
   const [complete, setComplete] = useState(false);
   const [resumeName, setResumeName] = useState('');
+
+  // Restore saved text fields from localStorage
+  const savedFields = useRef(loadFormBackup<CareerFormFields>(CAREER_FORM_KEY));
+
+  // Auto-save text fields to localStorage whenever the form changes
+  const formRef = useRef<HTMLFormElement>(null);
+  function persistTextFields() {
+    const form = formRef.current;
+    if (!form) return;
+    const data: CareerFormFields = {
+      name: (form.elements.namedItem('name') as HTMLInputElement)?.value ?? '',
+      email: (form.elements.namedItem('email') as HTMLInputElement)?.value ?? '',
+      phone: (form.elements.namedItem('phone') as HTMLInputElement)?.value ?? '',
+      experience: (form.elements.namedItem('experience') as HTMLInputElement)?.value ?? '',
+      profileUrl: (form.elements.namedItem('profileUrl') as HTMLInputElement)?.value ?? '',
+      coverLetter: (form.elements.namedItem('coverLetter') as HTMLTextAreaElement)?.value ?? '',
+    };
+    saveFormBackup(CAREER_FORM_KEY, data);
+  }
 
   useEffect(() => {
     if (messageKind === 'error' || messageKind === 'success') messageRef.current?.focus();
@@ -64,6 +87,7 @@ export default function CareerApplicationForm({ opening }: { opening?: CareerOpe
       form.reset();
       setComplete(true);
       setResumeName('');
+      clearFormBackup(CAREER_FORM_KEY);
       showMessage('success', 'Application received. Our team will review it and contact you if there is a match.');
     } catch (submissionError) {
       showMessage('error', submissionError instanceof Error ? submissionError.message : 'Could not submit your application.');
@@ -73,7 +97,7 @@ export default function CareerApplicationForm({ opening }: { opening?: CareerOpe
   }
 
   return (
-    <form className="career-application-form" onSubmit={submit} aria-busy={submitting}>
+    <form className="career-application-form" onSubmit={submit} aria-busy={submitting} ref={formRef} onChange={persistTextFields}>
       <div className="career-application-heading">
         <span><FiSend aria-hidden="true" /></span>
         <div>
@@ -87,12 +111,12 @@ export default function CareerApplicationForm({ opening }: { opening?: CareerOpe
           <legend className="career-form-required">Fields marked <span aria-hidden="true">*</span> are required.</legend>
           <input name="website" tabIndex={-1} autoComplete="off" className="career-honeypot" aria-hidden="true" />
           <div className="career-form-grid">
-            <label>Full name <span aria-hidden="true">*</span><input name="name" required maxLength={160} autoComplete="name" /></label>
-            <label>Email address <span aria-hidden="true">*</span><input name="email" type="email" required autoComplete="email" /></label>
-            <label>Phone number<input name="phone" type="tel" maxLength={40} autoComplete="tel" /></label>
-            <label>Experience<input name="experience" placeholder="Example: 3 years / Fresher" maxLength={160} /></label>
-            <label className="career-form-wide">Portfolio or LinkedIn URL <small>Optional</small><input name="profileUrl" type="url" placeholder="https://" autoComplete="url" /></label>
-            <label className="career-form-wide">Cover letter <span aria-hidden="true">*</span><textarea name="coverLetter" required minLength={10} maxLength={5000} rows={7} aria-describedby="cover-letter-help" placeholder="Tell us why this opportunity interests you and what you would bring to the team." /><small id="cover-letter-help">A short, thoughtful introduction is enough. Maximum 5,000 characters.</small></label>
+            <label>Full name <span aria-hidden="true">*</span><input name="name" required maxLength={160} autoComplete="name" defaultValue={savedFields.current?.name} /></label>
+            <label>Email address <span aria-hidden="true">*</span><input name="email" type="email" required autoComplete="email" defaultValue={savedFields.current?.email} /></label>
+            <label>Phone number<input name="phone" type="tel" maxLength={40} autoComplete="tel" defaultValue={savedFields.current?.phone} /></label>
+            <label>Experience<input name="experience" placeholder="Example: 3 years / Fresher" maxLength={160} defaultValue={savedFields.current?.experience} /></label>
+            <label className="career-form-wide">Portfolio or LinkedIn URL <small>Optional</small><input name="profileUrl" type="url" placeholder="https://" autoComplete="url" defaultValue={savedFields.current?.profileUrl} /></label>
+            <label className="career-form-wide">Cover letter <span aria-hidden="true">*</span><textarea name="coverLetter" required minLength={10} maxLength={5000} rows={7} aria-describedby="cover-letter-help" placeholder="Tell us why this opportunity interests you and what you would bring to the team." defaultValue={savedFields.current?.coverLetter} /><small id="cover-letter-help">A short, thoughtful introduction is enough. Maximum 5,000 characters.</small></label>
             <label className="career-resume-field career-form-wide">
               <span><FiFileText aria-hidden="true" /><strong>Resume *</strong><small id="resume-help">PDF, DOC, or DOCX / Maximum 5 MB</small></span>
               <input name="resume" type="file" required aria-describedby="resume-help" onChange={(event) => selectResume(event.target.files?.[0])} accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />

@@ -1,10 +1,11 @@
-import { useState, useRef, useCallback, type FormEvent, type ChangeEvent } from 'react';
+import { useState, useRef, useCallback, useEffect, type FormEvent, type ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiArrowLeft, FiArrowRight, FiUser, FiBriefcase,
   FiFileText, FiUpload, FiCheckCircle, FiSend, FiX,
 } from 'react-icons/fi';
 import { submitCareerApplication } from '../api/cmsClient';
+import { saveFormBackup, loadFormBackup, clearFormBackup } from '../utils/formBackup';
 
 /* ─── Step config ─────────────────────────────────────── */
 const STEPS = [
@@ -26,11 +27,20 @@ type Fields = {
   experience: string; profileUrl: string;
   coverLetter: string; resume: File | null;
 };
-const EMPTY: Fields = {
-  name: '', email: '', phone: '',
-  experience: '', profileUrl: '',
-  coverLetter: '', resume: null,
-};
+type TextFields = Omit<Fields, 'resume'>;
+const TALENT_FORM_KEY = 'talent_network';
+
+function buildEmpty(saved?: TextFields | null): Fields {
+  return {
+    name: saved?.name ?? '',
+    email: saved?.email ?? '',
+    phone: saved?.phone ?? '',
+    experience: saved?.experience ?? '',
+    profileUrl: saved?.profileUrl ?? '',
+    coverLetter: saved?.coverLetter ?? '',
+    resume: null,
+  };
+}
 
 /* ─── Floating label input ────────────────────────────── */
 function FloatInput({
@@ -65,7 +75,7 @@ export default function TalentNetworkForm() {
   const [step, setStep]         = useState(0);
   const [dir, setDir]           = useState<1 | -1>(1);
   const [animKey, setAnimKey]   = useState(0);
-  const [fields, setFields]     = useState<Fields>(EMPTY);
+  const [fields, setFields]     = useState<Fields>(() => buildEmpty(loadFormBackup<TextFields>(TALENT_FORM_KEY)));
   const [error, setError]       = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone]         = useState(false);
@@ -75,6 +85,12 @@ export default function TalentNetworkForm() {
     setFields(f => ({ ...f, [k]: v }));
     setError('');
   }, []);
+
+  // Auto-save text fields to localStorage on every change
+  useEffect(() => {
+    const { resume: _r, ...textFields } = fields;
+    saveFormBackup(TALENT_FORM_KEY, textFields);
+  }, [fields]);
 
   function validate(): string {
     if (step === 0) {
@@ -124,6 +140,7 @@ export default function TalentNetworkForm() {
       data.set('source',       'careers-website');
       await submitCareerApplication(data);
       setDone(true);
+      clearFormBackup(TALENT_FORM_KEY);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {

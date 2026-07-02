@@ -842,6 +842,14 @@ body {
   padding-top: var(--nav-h);
 }
 
+/* ══════════ ULTRA-WIDE / TV RESPONSIVENESS ══════════ */
+@media (min-width: 1921px) {
+  html {
+    /* Scale the entire UI proportionally for ultra-wide displays and TVs */
+    zoom: calc(100vw / 1920);
+  }
+}
+
 /* ══════════ NAV ══════════ */
 nav {
   position: fixed;
@@ -849,16 +857,26 @@ nav {
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 200;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--nav-border);
+  z-index: 999999;
   height: var(--nav-h);
   display: flex;
   align-items: center;
   padding: 0 32px;
   transition: var(--transition);
+}
+
+nav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--nav-border);
+  z-index: -1;
 }
 
 .nav-inner {
@@ -1470,7 +1488,8 @@ html[data-theme="light"] .logo-mark {
   transform: scaleX(1);
 }
 
-.has-dropdown:hover .dropdown {
+.has-dropdown:hover .dropdown,
+.has-dropdown.open .dropdown {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);
@@ -1484,8 +1503,6 @@ html[data-theme="light"] .logo-mark {
   top: calc(100% + 6px);
   left: 50%;
   background: var(--dropdown-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--dropdown-border);
   border-radius: 18px;
   padding: 10px;
@@ -1493,6 +1510,25 @@ html[data-theme="light"] .logo-mark {
   box-shadow: var(--shadow-xl);
   z-index: 300;
   transition: var(--transition);
+  
+  /* Added for responsiveness on smaller laptop screens (e.g., 14 inch) */
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for dropdown to match the design */
+.dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dropdown::-webkit-scrollbar-thumb {
+  background: rgba(var(--orange-rgb), 0.3);
+  border-radius: 10px;
+}
+.dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--orange-rgb), 0.6);
 }
 
 .services-dropdown-header {
@@ -15327,11 +15363,8 @@ html[data-theme='dark'] .industry-name {
 }
 
 /* --- NAVBAR: ensure no overflow on any screen --- */
-@media (max-width: 1400px) {
-  .nav-inner {
-    overflow: hidden !important;
-  }
-}
+/* Removed overflow: hidden on .nav-inner because it clips the dropdown menu on 14-inch laptops */
+
 
 /* --- GENERAL: prevent horizontal scroll on all screen widths --- */
 body,

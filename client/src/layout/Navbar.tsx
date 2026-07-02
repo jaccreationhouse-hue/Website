@@ -80,6 +80,13 @@ export default function Navbar() {
                 aria-haspopup="true"
                 aria-expanded={desktopServicesOpen}
                 aria-controls="desktop-services-menu"
+                onClick={(e) => {
+                  // If on a touch device and it's not open, open it instead of navigating
+                  if (!desktopServicesOpen && window.matchMedia('(pointer: coarse)').matches) {
+                    e.preventDefault();
+                    setDesktopServicesOpen(true);
+                  }
+                }}
               >
                 <span>Our Services</span>
                 <FiChevronDown className="nav-services-chevron" size={14} aria-hidden="true" />

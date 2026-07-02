@@ -9,7 +9,7 @@ import NotFound from './NotFound';
 
 export default function CareerOpening() {
   const { slug = '' } = useParams();
-  const { items: openings, loading } = { items: fallbackCareerOpenings, loading: false };
+  const { items: openings, loading } = useCmsCollectionState<CareerOpeningItem>('careerOpenings', fallbackCareerOpenings);
   const opening = openings.find((item) => item.slug === slug);
   if (loading) {
     return (
