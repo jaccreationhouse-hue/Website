@@ -9,7 +9,7 @@ export interface CmsClientOptions {
 const SITE_KEY = 'jac-medialand';
 
 function configuredBaseUrl(): string {
-  return import.meta.env?.VITE_CMS_API_URL || (import.meta.env?.DEV ? 'http://localhost:4000' : 'https://website-1cc5.onrender.com');
+  return (import.meta.env?.VITE_CMS_API_URL || (import.meta.env?.DEV ? 'http://localhost:4000' : '')).replace(/\/+$/, '');
 }
 
 export function buildCmsUrl(path: string, baseUrl = configuredBaseUrl()): string {
@@ -104,4 +104,3 @@ export function fetchCmsSettings(
 ): Promise<Record<string, Record<string, unknown>>> {
   return fetchCmsJson(`/v1/public/sites/${SITE_KEY}/settings`, options);
 }
-

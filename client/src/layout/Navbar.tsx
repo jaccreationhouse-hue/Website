@@ -3,9 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   FiArrowRight,
   FiChevronDown,
-  FiMoon,
   FiPhone,
-  FiSun,
 } from 'react-icons/fi';
 import logoImageDark from '../assets/websitelogo_dark.webp';
 import { services } from '../data/services';

@@ -88,8 +88,8 @@ export default function TalentNetworkForm() {
 
   // Auto-save text fields to localStorage on every change
   useEffect(() => {
-    const { resume: _r, ...textFields } = fields;
-    saveFormBackup(TALENT_FORM_KEY, textFields);
+    const { name, email, phone, experience, profileUrl, coverLetter } = fields;
+    saveFormBackup(TALENT_FORM_KEY, { name, email, phone, experience, profileUrl, coverLetter });
   }, [fields]);
 
   function validate(): string {

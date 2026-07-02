@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import { useCmsCollection } from '../api/useCmsCollection';
 import { fallbackHighlights, type HighlightItem } from '../data/cmsSections';
-import { HomeHeroIllustration } from '../components/Illustrations.tsx';
 import { DoodlePro } from '../components/DoodlePro.tsx';
 import CompanyLogo from '../components/CompanyLogos';
 
@@ -24,11 +23,7 @@ import {
   FiGlobe, 
   FiAward, 
   FiMap,
-  FiPenTool,
-  FiSmartphone,
-  FiCode,
   FiTrendingUp,
-  FiCheckCircle,
   FiZap,
   FiClock,
   FiCoffee,
@@ -43,10 +38,35 @@ import {
 
 import { services } from '../data/services';
 
+function shouldDeferHomeSections() {
+  return typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches;
+}
+
 export default function Home() {
-  const highlights = useCmsCollection<HighlightItem>('highlights', fallbackHighlights);
+  const highlights = useCmsCollection<HighlightItem>('highlights', fallbackHighlights, {
+    deferUntilIdle: true,
+    deferDelayMs: 6000,
+  });
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isAboutFlipped, setIsAboutFlipped] = useState(false);
+  const [showDeferredSections, setShowDeferredSections] = useState(() => !shouldDeferHomeSections());
+
+  useEffect(() => {
+    if (showDeferredSections) return;
+
+    const revealSections = () => setShowDeferredSections(true);
+    const timeoutId = window.setTimeout(revealSections, 12000);
+    window.addEventListener('scroll', revealSections, { once: true, passive: true });
+    window.addEventListener('pointerdown', revealSections, { once: true, passive: true });
+    window.addEventListener('keydown', revealSections, { once: true });
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener('scroll', revealSections);
+      window.removeEventListener('pointerdown', revealSections);
+      window.removeEventListener('keydown', revealSections);
+    };
+  }, [showDeferredSections]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -84,26 +104,26 @@ export default function Home() {
         
         <div className="hero-inner-split">
           <div className="hero-content-left">
-            <ScrollReveal direction="up" delay={100}>
+            <ScrollReveal direction="up" delay={100} eager>
               <span className="hero-eyebrow-pill">
                 JAC MediaLand
               </span>
             </ScrollReveal>
             
-            <ScrollReveal direction="up" delay={200}>
+            <ScrollReveal direction="up" delay={200} eager>
               <h1 className="hero-heading-left">
                 Come let's feed your<br/>
                 <span className="highlight-dashed">Brand Today</span>
               </h1>
             </ScrollReveal>
             
-            <ScrollReveal direction="up" delay={300}>
+            <ScrollReveal direction="up" delay={300} eager>
               <p className="hero-sub-left">
                 Many of life's failures are people who did not realize how close they were to success when they gave up. We will help to bring your wildest ideas to life.
               </p>
             </ScrollReveal>
             
-            <ScrollReveal direction="up" delay={350}>
+            <ScrollReveal direction="up" delay={350} eager>
               <div className="hero-cta-group">
                 <Link to="/contact" className="btn-3d">
                   <span className="button_top" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
@@ -123,13 +143,15 @@ export default function Home() {
           </div>
           
           <div className="hero-content-right">
-            <ScrollReveal direction="none" delay={300}>
+            <ScrollReveal direction="none" delay={300} eager>
               <DoodlePro />
             </ScrollReveal>
           </div>
         </div>
       </div>
 
+      {showDeferredSections ? (
+      <>
       {/* ABOUT US SECTION */}
       <section className="section home-about-section" style={{ background: 'var(--gray-50)', borderBottom: '1px solid var(--gray-100)', padding: '48px 20px' }}>
         <div className="wrap">
@@ -556,6 +578,10 @@ export default function Home() {
       </section>
 
 
+      </>
+      ) : (
+        <div className="home-deferred-placeholder" aria-hidden="true" />
+      )}
 
       {/* VIDEO MODAL OVERLAY */}
       {isVideoModalOpen && (

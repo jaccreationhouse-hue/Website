@@ -8,6 +8,8 @@ import Contact from '../models/Contact.js';
 import Settings from '../models/Settings.js';
 import Program from '../models/Program.js';
 import Activity from '../models/Activity.js';
+import CareerOpening from '../models/CareerOpening.js';
+import CareerApplication from '../models/CareerApplication.js';
 
 // Helper to log activities
 const logActivity = async (action, description) => {
@@ -348,6 +350,80 @@ export const deleteProgram = async (req, res) => {
     if (!data) return res.status(404).json({ message: 'Program not found' });
     await logActivity('Delete Program', `Program "${data.title}" was deleted.`);
     res.json({ message: 'Program deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Career Openings CRUD
+export const getCareerOpenings = async (req, res) => {
+  try {
+    const data = await CareerOpening.find().sort({ sortOrder: 1, createdAt: -1 });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const createCareerOpening = async (req, res) => {
+  try {
+    const data = await CareerOpening.create(req.body);
+    await logActivity('Create Career Opening', `Career opening "${data.title}" was created.`);
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const updateCareerOpening = async (req, res) => {
+  try {
+    const data = await CareerOpening.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!data) return res.status(404).json({ message: 'Career opening not found' });
+    await logActivity('Update Career Opening', `Career opening "${data.title}" was updated.`);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const deleteCareerOpening = async (req, res) => {
+  try {
+    const data = await CareerOpening.findByIdAndDelete(req.params.id);
+    if (!data) return res.status(404).json({ message: 'Career opening not found' });
+    await logActivity('Delete Career Opening', `Career opening "${data.title}" was deleted.`);
+    res.json({ message: 'Career opening deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Career Applications
+export const getCareerApplications = async (req, res) => {
+  try {
+    const data = await CareerApplication.find().sort({ createdAt: -1 });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateCareerApplication = async (req, res) => {
+  try {
+    const data = await CareerApplication.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!data) return res.status(404).json({ message: 'Career application not found' });
+    await logActivity('Update Career Application', `Application from "${data.name}" was updated to "${data.status}".`);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const deleteCareerApplication = async (req, res) => {
+  try {
+    const data = await CareerApplication.findByIdAndDelete(req.params.id);
+    if (!data) return res.status(404).json({ message: 'Career application not found' });
+    await logActivity('Delete Career Application', `Application from "${data.name}" was deleted.`);
+    res.json({ message: 'Career application deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

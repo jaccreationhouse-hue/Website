@@ -1,17 +1,14 @@
 
-import { useState, lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import Footer from './layout/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import GoogleAnalytics from './components/GoogleAnalytics';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
-import Loader from './components/Loader';
-import PageLoader from './components/PageLoader';
+import Home from './pages/Home';
 import './index.css';
 
-// Lazy-loaded page components for code-splitting
-const Home = lazy(() => import('./pages/Home'));
+// Lazy-loaded secondary page components for code-splitting.
 const About = lazy(() => import('./pages/About'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
 const Services = lazy(() => import('./pages/Services'));
@@ -43,11 +40,10 @@ function Layout() {
 
   return (
     <>
-      <GoogleAnalytics />
       <FloatingWhatsApp />
       <ScrollToTop />
       {!isFullscreen && <Navbar />}
-      <Suspense fallback={<PageLoader />}>
+      <Suspense fallback={<div className="route-loading" aria-hidden="true" />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -72,19 +68,13 @@ function Layout() {
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        {!isFullscreen && <Footer />}
       </Suspense>
-      {!isFullscreen && <Footer />}
     </>
   );
 }
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  if (loading) {
-    return <Loader onFinished={() => setLoading(false)} />;
-  }
-
   return (
     <Router>
       <Layout />

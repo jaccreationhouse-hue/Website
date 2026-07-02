@@ -98,6 +98,9 @@ export default function About() {
                     src={logoImageDark}
                     alt="JAC MediaLand Logo"
                     className="abp-logo-img"
+                    width="96"
+                    height="96"
+                    decoding="async"
                   />
                   <div className="abp-logo-text-group">
                     <span className="abp-logo-brand">JAC MediaLand</span>
@@ -244,6 +247,10 @@ export default function About() {
                   src={getFounderImageUrl(founder.image)}
                   alt={`${founder.title}, Founder and CEO of JAC MediaLand`}
                   className="founder-photo"
+                  width="600"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <span className="founder-photo-label">Founder Spotlight</span>
               </div>
@@ -284,7 +291,10 @@ export default function About() {
                         src={getMemberImageUrl(member.image) || ''}
                         alt={member.title}
                         className="abp-team-photo"
+                        width="320"
+                        height="320"
                         loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <div className="abp-team-placeholder">

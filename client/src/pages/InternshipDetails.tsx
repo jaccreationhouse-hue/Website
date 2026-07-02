@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import {
   FiArrowLeft,
-  FiArrowRight,
   FiCheck,
   FiCode,
   FiLayout,
@@ -209,6 +208,9 @@ export default function InternshipDetails() {
                   src={internshipProgram}
                   alt="Internship Program Flyer"
                   className="intd-poster-img"
+                  width="682"
+                  height="1024"
+                  decoding="async"
                 />
                 <span className="intd-poster-badge">
                   <span className="intd-badge-dot" />

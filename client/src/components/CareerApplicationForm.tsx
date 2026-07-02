@@ -28,7 +28,7 @@ export default function CareerApplicationForm({ opening }: { opening?: CareerOpe
   const [resumeName, setResumeName] = useState('');
 
   // Restore saved text fields from localStorage
-  const savedFields = useRef(loadFormBackup<CareerFormFields>(CAREER_FORM_KEY));
+  const [savedFields] = useState(() => loadFormBackup<CareerFormFields>(CAREER_FORM_KEY));
 
   // Auto-save text fields to localStorage whenever the form changes
   const formRef = useRef<HTMLFormElement>(null);
@@ -111,12 +111,12 @@ export default function CareerApplicationForm({ opening }: { opening?: CareerOpe
           <legend className="career-form-required">Fields marked <span aria-hidden="true">*</span> are required.</legend>
           <input name="website" tabIndex={-1} autoComplete="off" className="career-honeypot" aria-hidden="true" />
           <div className="career-form-grid">
-            <label>Full name <span aria-hidden="true">*</span><input name="name" required maxLength={160} autoComplete="name" defaultValue={savedFields.current?.name} /></label>
-            <label>Email address <span aria-hidden="true">*</span><input name="email" type="email" required autoComplete="email" defaultValue={savedFields.current?.email} /></label>
-            <label>Phone number<input name="phone" type="tel" maxLength={40} autoComplete="tel" defaultValue={savedFields.current?.phone} /></label>
-            <label>Experience<input name="experience" placeholder="Example: 3 years / Fresher" maxLength={160} defaultValue={savedFields.current?.experience} /></label>
-            <label className="career-form-wide">Portfolio or LinkedIn URL <small>Optional</small><input name="profileUrl" type="url" placeholder="https://" autoComplete="url" defaultValue={savedFields.current?.profileUrl} /></label>
-            <label className="career-form-wide">Cover letter <span aria-hidden="true">*</span><textarea name="coverLetter" required minLength={10} maxLength={5000} rows={7} aria-describedby="cover-letter-help" placeholder="Tell us why this opportunity interests you and what you would bring to the team." defaultValue={savedFields.current?.coverLetter} /><small id="cover-letter-help">A short, thoughtful introduction is enough. Maximum 5,000 characters.</small></label>
+            <label>Full name <span aria-hidden="true">*</span><input name="name" required maxLength={160} autoComplete="name" defaultValue={savedFields?.name} /></label>
+            <label>Email address <span aria-hidden="true">*</span><input name="email" type="email" required autoComplete="email" defaultValue={savedFields?.email} /></label>
+            <label>Phone number<input name="phone" type="tel" maxLength={40} autoComplete="tel" defaultValue={savedFields?.phone} /></label>
+            <label>Experience<input name="experience" placeholder="Example: 3 years / Fresher" maxLength={160} defaultValue={savedFields?.experience} /></label>
+            <label className="career-form-wide">Portfolio or LinkedIn URL <small>Optional</small><input name="profileUrl" type="url" placeholder="https://" autoComplete="url" defaultValue={savedFields?.profileUrl} /></label>
+            <label className="career-form-wide">Cover letter <span aria-hidden="true">*</span><textarea name="coverLetter" required minLength={10} maxLength={5000} rows={7} aria-describedby="cover-letter-help" placeholder="Tell us why this opportunity interests you and what you would bring to the team." defaultValue={savedFields?.coverLetter} /><small id="cover-letter-help">A short, thoughtful introduction is enough. Maximum 5,000 characters.</small></label>
             <label className="career-resume-field career-form-wide">
               <span><FiFileText aria-hidden="true" /><strong>Resume *</strong><small id="resume-help">PDF, DOC, or DOCX / Maximum 5 MB</small></span>
               <input name="resume" type="file" required aria-describedby="resume-help" onChange={(event) => selectResume(event.target.files?.[0])} accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />

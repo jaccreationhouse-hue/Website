@@ -5,7 +5,12 @@ interface ScrollRevealProps {
   className?: string;
   delay?: number; // delay in ms
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
+  eager?: boolean;
   style?: React.CSSProperties;
+}
+
+function prefersReducedMotion() {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 export default function ScrollReveal({ 
@@ -13,12 +18,17 @@ export default function ScrollReveal({
   className = '', 
   delay = 0, 
   direction = 'up',
+  eager = false,
   style = {}
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isIntersecting, setIsIntersecting] = useState(() => eager || prefersReducedMotion());
 
   useEffect(() => {
+    if (eager || prefersReducedMotion()) {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -45,7 +55,7 @@ export default function ScrollReveal({
       }
       observer.disconnect();
     };
-  }, []);
+  }, [eager]);
 
   const getDirectionStyle = () => {
     if (isIntersecting) {
@@ -77,7 +87,7 @@ export default function ScrollReveal({
       style={{
         transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         transitionDelay: `${delay}ms`,
-        willChange: 'opacity, transform',
+        willChange: isIntersecting ? 'auto' : 'opacity, transform',
         ...getDirectionStyle(),
         ...style
       }}

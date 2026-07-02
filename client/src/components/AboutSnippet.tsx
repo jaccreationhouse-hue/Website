@@ -18,6 +18,10 @@ export default function AboutSnippet() {
                   src={logoImageDark} 
                   alt="JAC Logo Mark" 
                   className="about-brutal-logo-img" 
+                  width="96"
+                  height="96"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>

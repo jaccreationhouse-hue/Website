@@ -1,4 +1,10 @@
-const API_URL = import.meta.env.VITE_CMS_API_URL || 'http://localhost:4000';
+export const API_BASE_URL = (import.meta.env.VITE_CMS_API_URL || (import.meta.env.DEV ? 'http://localhost:4000' : '')).replace(/\/+$/, '');
+
+export const resolveMediaUrl = (url?: string) => {
+  if (!url) return '';
+  if (!url.startsWith('/')) return url;
+  return `${API_BASE_URL}${url}`;
+};
 
 const getHeaders = (isMultipart = false) => {
   const token = localStorage.getItem('admin_token');
@@ -13,7 +19,7 @@ const getHeaders = (isMultipart = false) => {
 };
 
 export const apiFetch = async (path: string, options: RequestInit = {}) => {
-  const url = `${API_URL}${path}`;
+  const url = `${API_BASE_URL}${path}`;
   const response = await fetch(url, {
     ...options,
     headers: {

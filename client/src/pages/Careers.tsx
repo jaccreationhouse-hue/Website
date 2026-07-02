@@ -14,6 +14,17 @@ import {
   FiZap,
 } from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
+import CareerApplicationForm from '../components/CareerApplicationForm';
+import { useCmsCollection } from '../api/useCmsCollection';
+import {
+  fallbackCareerOpenings,
+  type CareerOpeningItem,
+} from '../data/cmsSections';
+import {
+  careerOpeningPath,
+  isCareerOpeningAcceptingApplications,
+  isGeneralCareerOpening,
+} from '../data/careers';
 
 const benefits = [
   { Icon: FiClock,     title: 'Flexible work hours',      description: 'Do your best work with a rhythm that supports focus and responsibility.' },
@@ -55,6 +66,8 @@ const hiringSteps = [
 
 
 export default function Careers() {
+  const openings = useCmsCollection<CareerOpeningItem>('careerOpenings', fallbackCareerOpenings);
+
   return (
     <main className="page careers-page" style={{ display: 'block' }}>
 
@@ -84,9 +97,9 @@ export default function Careers() {
 
           <ScrollReveal direction="up" delay={240}>
             <div className="crp-hero-actions">
-              <Link to="/careers/talent-network" className="crp-btn-primary">
+              <a href="#apply" className="crp-btn-primary">
                 Apply for a role <FiArrowRight />
-              </Link>
+              </a>
               <a href="#how-we-work" className="crp-btn-ghost">
                 How we work ↓
               </a>
@@ -108,6 +121,8 @@ export default function Careers() {
       </section>
 
       {/* ── HOW WE WORK ───────────────────────────────────────── */}
+      <OpeningsSection openings={openings} />
+
       <section className="crp-hww-section" id="how-we-work">
         <div className="crp-hww-inner">
           <ScrollReveal direction="up" delay={60}>
@@ -220,5 +235,62 @@ export default function Careers() {
       </section>
 
     </main>
+  );
+}
+
+function OpeningsSection({ openings }: { openings: CareerOpeningItem[] }) {
+  const sortedOpenings = [...openings].sort((a, b) => {
+    const aAccepting = isCareerOpeningAcceptingApplications(a) ? 0 : 1;
+    const bAccepting = isCareerOpeningAcceptingApplications(b) ? 0 : 1;
+    return aAccepting - bAccepting || (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
+  });
+  const featuredOpening = sortedOpenings.find(isGeneralCareerOpening) ?? sortedOpenings[0] ?? fallbackCareerOpenings[0];
+
+  return (
+    <>
+      <section className="crp-roles-section" id="openings">
+        <div className="crp-roles-inner">
+          <ScrollReveal direction="up" delay={60}>
+            <div className="crp-section-head crp-section-head-split">
+              <div>
+                <span className="crp-label">Open opportunities</span>
+                <h2>Find the right way to join us.</h2>
+                <p>Explore current roles or introduce yourself for future openings.</p>
+              </div>
+              <a className="crp-roles-all-link" href="#apply">General application</a>
+            </div>
+          </ScrollReveal>
+
+          <div className="crp-roles-list">
+            {sortedOpenings.map((opening, idx) => {
+              const accepting = isCareerOpeningAcceptingApplications(opening);
+              const general = isGeneralCareerOpening(opening);
+              const statusLabel = accepting ? 'Applications open' : 'Applications closed';
+
+              return (
+                <ScrollReveal key={opening.slug} direction="up" delay={idx * 80}>
+                  <Link className="crp-role-row" to={careerOpeningPath(opening)}>
+                    <span className="crp-role-dept">{opening.department || 'Careers'}</span>
+                    <span className="crp-role-title">{opening.title}</span>
+                    <span className="crp-role-meta">
+                      <span className="crp-role-tag">{general ? 'General' : opening.employmentType}</span>
+                      <span className="crp-role-tag crp-role-tag-loc">{opening.location}</span>
+                      <span className="crp-role-tag">{statusLabel}</span>
+                    </span>
+                    <FiArrowRight className="crp-role-arrow" aria-hidden="true" />
+                  </Link>
+                </ScrollReveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="career-apply-section" id="apply">
+        <div className="wrap careers-container">
+          <CareerApplicationForm opening={featuredOpening} />
+        </div>
+      </section>
+    </>
   );
 }

@@ -37,29 +37,24 @@ import {
   getPrograms,
   createProgram,
   updateProgram,
-  deleteProgram
+  deleteProgram,
+  getCareerOpenings,
+  createCareerOpening,
+  updateCareerOpening,
+  deleteCareerOpening,
+  getCareerApplications,
+  updateCareerApplication,
+  deleteCareerApplication
 } from '../controllers/adminController.js';
 
 const router = express.Router();
-
-import { v2 as cloudinary } from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
+import { createCloudinaryStorage } from '../config/cloudinary.js';
 
 // Multer Config for File Uploads
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'jac_uploads',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif']
-    // Note: Cloudinary restricts some formats like svg/ico for security by default unless configured in their dashboard.
-  }
+const storage = createCloudinaryStorage({
+  folder: 'jac_uploads',
+  allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif']
+  // Note: Cloudinary restricts some formats like svg/ico for security by default unless configured in their dashboard.
 });
 
 const upload = multer({ storage });
@@ -144,5 +139,20 @@ router.route('/programs')
 router.route('/programs/:id')
   .put(protect, updateProgram)
   .delete(protect, deleteProgram);
+
+// Career Openings
+router.route('/career-openings')
+  .get(getCareerOpenings)
+  .post(protect, createCareerOpening);
+router.route('/career-openings/:id')
+  .put(protect, updateCareerOpening)
+  .delete(protect, deleteCareerOpening);
+
+// Career Applications
+router.route('/career-applications')
+  .get(protect, getCareerApplications);
+router.route('/career-applications/:id')
+  .put(protect, updateCareerApplication)
+  .delete(protect, deleteCareerApplication);
 
 export default router;

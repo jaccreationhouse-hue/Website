@@ -12,8 +12,7 @@ import {
 import ScrollReveal from '../components/ScrollReveal';
 import { createWhatsAppGreeting, createWhatsAppUrl } from '../utils/whatsapp';
 import { submitCmsLead } from '../api/cmsClient';
-import { useCmsCollection } from '../api/useCmsCollection';
-import { fallbackContacts, type ContactItem } from '../data/cmsSections';
+import { fallbackContacts } from '../data/cmsSections';
 import { saveFormBackup, loadFormBackup, clearFormBackup } from '../utils/formBackup';
 
 const CONTACT_FORM_KEY = 'contact';

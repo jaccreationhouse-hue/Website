@@ -15,6 +15,9 @@ import Contacts from './pages/Contacts';
 import Settings from './pages/Settings';
 import Programs from './pages/Programs';
 import ProgramForm from './pages/ProgramForm';
+import CareerOpenings from './pages/CareerOpenings';
+import CareerOpeningForm from './pages/CareerOpeningForm';
+import CareerApplications from './pages/CareerApplications';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -158,6 +161,38 @@ const App: React.FC = () => {
                 <ProgramForm />
               </ProtectedRoute>
             } 
+          />
+          <Route
+            path="/career-openings"
+            element={
+              <ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
+                <CareerOpenings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-openings/new"
+            element={
+              <ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
+                <CareerOpeningForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-openings/edit/:id"
+            element={
+              <ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
+                <CareerOpeningForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-applications"
+            element={
+              <ProtectedRoute darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
+                <CareerApplications />
+              </ProtectedRoute>
+            }
           />
 
           <Route 

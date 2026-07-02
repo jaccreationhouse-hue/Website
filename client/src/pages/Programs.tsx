@@ -14,7 +14,7 @@ import internshipProgram from '../assets/internship_program.jpg';
 import heroIllustration from '../assets/hero_illustration.png';
 import professionalTeam from '../assets/professional_team.png';
 import { useCmsCollection } from '../api/useCmsCollection';
-import { fallbackPrograms, type ProgramItem } from '../data/cmsSections';
+import { fallbackPrograms } from '../data/cmsSections';
 
 const learningBenefits = [
   { title: 'Real Projects', description: 'Build practical experience through meaningful work.', icon: <FiBriefcase /> },
@@ -81,7 +81,14 @@ export default function Programs() {
           <ScrollReveal direction="up" delay={120}>
             <div className="prg-featured-card">
               <div className="prg-featured-image-col">
-                <img src={programImages[activeProgram.imageKey ?? 'internship'] ?? internshipProgram} alt={activeProgram.title} />
+                <img
+                  src={programImages[activeProgram.imageKey ?? 'internship'] ?? internshipProgram}
+                  alt={activeProgram.title}
+                  width="682"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <span className="prg-status-badge prg-status-open">{activeProgram.launch}</span>
               </div>
               
@@ -144,7 +151,15 @@ export default function Programs() {
               <ScrollReveal key={program.title} direction="up" delay={index * 100}>
                 <article className="prg-upcoming-card">
                   <div className="prg-upcoming-image-wrap">
-                    <img src={programImages[program.imageKey ?? ''] ?? heroIllustration} alt="" aria-hidden="true" />
+                    <img
+                      src={programImages[program.imageKey ?? ''] ?? heroIllustration}
+                      alt=""
+                      aria-hidden="true"
+                      width="1024"
+                      height="1024"
+                      loading="lazy"
+                      decoding="async"
+                    />
                     <span className="prg-status-badge">Coming Soon</span>
                   </div>
                   <div className="prg-upcoming-card-body">

@@ -829,7 +829,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--white);
   color: var(--black);
   min-height: 100vh;
@@ -840,6 +840,34 @@ body {
   overflow-x: hidden;
   max-width: 100%;
   padding-top: var(--nav-h);
+}
+
+.route-loading {
+  min-height: calc(100vh - var(--nav-h));
+  background: var(--white);
+}
+
+.floating-whatsapp-widget {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  color: #ffffff;
+  background-color: #25d366;
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.floating-whatsapp-widget:hover,
+.floating-whatsapp-widget:focus-visible {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
 }
 
 /* ══════════ ULTRA-WIDE / TV RESPONSIVENESS ══════════ */
@@ -6703,6 +6731,20 @@ footer .footer-logo-wrap svg line {
 /* ══════════ RESPONSIVE HOME SECTIONS ══════════ */
 .home-section-padding {
   padding: 60px 80px;
+}
+
+.home-about-section,
+.home-section-padding,
+.how-we-are-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 720px;
+}
+
+.home-deferred-placeholder {
+  min-height: 7600px;
+  background:
+    linear-gradient(var(--gray-50), var(--white) 18%, var(--gray-50) 38%, var(--white) 62%, var(--gray-50));
+  border-top: 1px solid var(--card-border);
 }
 
 .highlights-grid {
@@ -20156,4 +20198,3 @@ html[data-theme='light'] .about-logo-img {
     font-size: 16px;
   }
 }
-

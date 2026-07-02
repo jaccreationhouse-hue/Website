@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaSave } from 'react-icons/fa';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 
 const Form = styled.form`
   display: flex;
@@ -230,8 +230,6 @@ const Settings: React.FC = () => {
 
   if (loading) return <div>Loading website settings...</div>;
 
-  const getMediaUrl = (url: string) => url.startsWith('/uploads') ? `${import.meta.env.VITE_CMS_API_URL || 'http://localhost:4000'}${url}` : url;
-
   return (
     <Form className="animated-fade" onSubmit={handleSubmit}>
       <Header>
@@ -251,7 +249,7 @@ const Settings: React.FC = () => {
           <FormGroup>
             <Label>Logo Link / Upload</Label>
             <PreviewContainer>
-              {logoUrl && <PreviewImage src={getMediaUrl(logoUrl)} alt="Logo" />}
+              {logoUrl && <PreviewImage src={resolveMediaUrl(logoUrl)} alt="Logo" />}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
                 <Input type="text" value={logoUrl} onChange={e => setLogoUrl(e.target.value)} placeholder="https://..." />
                 <FileInput type="file" accept="image/*" onChange={e => handleFileUpload(e, 'logo')} />
@@ -261,7 +259,7 @@ const Settings: React.FC = () => {
           <FormGroup>
             <Label>Favicon Link / Upload</Label>
             <PreviewContainer>
-              {faviconUrl && <PreviewImage src={getMediaUrl(faviconUrl)} alt="Favicon" style={{ maxWidth: '60px', maxHeight: '60px' }} />}
+              {faviconUrl && <PreviewImage src={resolveMediaUrl(faviconUrl)} alt="Favicon" style={{ maxWidth: '60px', maxHeight: '60px' }} />}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
                 <Input type="text" value={faviconUrl} onChange={e => setFaviconUrl(e.target.value)} placeholder="https://..." />
                 <FileInput type="file" accept="image/*" onChange={e => handleFileUpload(e, 'favicon')} />

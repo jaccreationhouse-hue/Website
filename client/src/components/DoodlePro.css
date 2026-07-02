@@ -655,6 +655,17 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .doodlepro,
+  .doodlepro *,
+  .doodlepro *::before,
+  .doodlepro *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
 @media (max-width: 640px) {
   .doodlepro__stage {
     width: 100%;

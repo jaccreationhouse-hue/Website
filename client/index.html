@@ -5,11 +5,14 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/webp" href="%BASE_URL%favicon.webp" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Google tag (gtag.js) deferred for performance -->
+  <!-- Google tag (gtag.js) delayed until the page is idle for performance -->
   <script>
     window.addEventListener('load', function() {
-      setTimeout(function() {
+      var analyticsScheduled = false;
+      var loadAnalytics = function() {
+        if (document.getElementById('ga-script-external')) return;
         var script = document.createElement('script');
+        script.id = 'ga-script-external';
         script.async = true;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-9ZPVXPPH73';
         document.head.appendChild(script);
@@ -18,12 +21,32 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-9ZPVXPPH73');
-      }, 2000); // Wait 2s after load to ensure no interference with interaction
+      };
+      var scheduleAnalytics = function() {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(loadAnalytics, { timeout: 8000 });
+        } else {
+          setTimeout(loadAnalytics, 8000);
+        }
+      };
+      var startAnalytics = function() {
+        if (analyticsScheduled) return;
+        analyticsScheduled = true;
+        window.removeEventListener('pointerdown', startAnalytics);
+        window.removeEventListener('keydown', startAnalytics);
+        window.removeEventListener('scroll', startAnalytics);
+        scheduleAnalytics();
+      };
+      window.addEventListener('pointerdown', startAnalytics, { once: true, passive: true });
+      window.addEventListener('keydown', startAnalytics, { once: true });
+      window.addEventListener('scroll', startAnalytics, { once: true, passive: true });
+      setTimeout(startAnalytics, 30000);
     });
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" /></noscript>
   <meta name="description"
     content="JAC MediaLand - A youth-powered creative and technology company building thoughtful digital experiences with clarity, precision, and purpose." />
   <meta name="keywords"
@@ -40,43 +63,53 @@
   <script type="module" src="/src/main.tsx"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-          navigator.serviceWorker.getRegistrations().then((registrations) => {
-            for (const registration of registrations) {
-              registration.unregister();
-            }
-          });
-          caches.keys().then((keys) => {
-            for (const key of keys) {
-              caches.delete(key);
-            }
-          });
+      var runWhenIdle = function(callback) {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(callback, { timeout: 5000 });
         } else {
-          navigator.serviceWorker.register('/sw.js', { scope: '/' })
-            .then((registration) => {
-              console.log('[SW] Registered, scope:', registration.scope);
-              registration.onupdatefound = () => {
-                const installingWorker = registration.installing;
-                if (installingWorker) {
-                  installingWorker.onstatechange = () => {
-                    if (installingWorker.state === 'installed') {
-                      if (navigator.serviceWorker.controller) {
-                        caches.keys().then((keys) => {
-                          Promise.all(keys.map(key => caches.delete(key))).then(() => {
-                            window.location.reload();
-                          });
-                        });
-                      }
-                    }
-                  };
-                }
-              };
-            })
-            .catch((err) => {
-              console.warn('[SW] Registration failed:', err);
-            });
+          setTimeout(callback, 2500);
         }
+      };
+
+      window.addEventListener('load', () => {
+        runWhenIdle(() => {
+          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+              for (const registration of registrations) {
+                registration.unregister();
+              }
+            });
+            caches.keys().then((keys) => {
+              for (const key of keys) {
+                caches.delete(key);
+              }
+            });
+          } else {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+              .then((registration) => {
+                console.log('[SW] Registered, scope:', registration.scope);
+                registration.onupdatefound = () => {
+                  const installingWorker = registration.installing;
+                  if (installingWorker) {
+                    installingWorker.onstatechange = () => {
+                      if (installingWorker.state === 'installed') {
+                        if (navigator.serviceWorker.controller) {
+                          caches.keys().then((keys) => {
+                            Promise.all(keys.map(key => caches.delete(key))).then(() => {
+                              window.location.reload();
+                            });
+                          });
+                        }
+                      }
+                    };
+                  }
+                };
+              })
+              .catch((err) => {
+                console.warn('[SW] Registration failed:', err);
+              });
+          }
+        });
       });
     }
   </script>

@@ -13,7 +13,7 @@ const settingsSchema = new mongoose.Schema({
     facebook: { type: String, default: '' },
     instagram: { type: String, default: '' }
   },
-  footerContent: { type: String, default: '© 2026 JAC MediaLand. All rights reserved.' }
+  footerContent: { type: String, default: '(c) 2026 JAC MediaLand. All rights reserved.' }
 }, { timestamps: true });
 
 export default mongoose.model('Settings', settingsSchema);

@@ -2,26 +2,25 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import publicRoutes from './routes/publicRoutes.js';
+import { env } from './config/env.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
-
-// Resolve static uploads directory
-const uploadsDir = path.join(__dirname, 'uploads');
+const allowedOrigins = new Set(env.corsOrigins);
 
 // Middlewares
 app.use(cors({
   origin: function (origin, callback) {
-    callback(null, true);
+    if (!origin || allowedOrigins.size === 0 || allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Origin ${origin} is not allowed by CORS`));
   },
   credentials: true
 }));
@@ -40,6 +39,14 @@ app.get('/', (req, res) => {
   res.json({ message: 'JAC MediaLand CMS API Server is running.' });
 });
 
+app.get('/healthz', (req, res) => {
+  res.json({
+    ok: true,
+    environment: env.nodeEnv,
+    databaseReady: mongoose.connection.readyState === 1
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -51,10 +58,10 @@ app.use((err, req, res, next) => {
 // Connect database and start server
 const startServer = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    const conn = await mongoose.connect(env.mongoUri);
     console.log(`Database Connected: ${conn.connection.host}`);
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+    app.listen(env.port, () => {
+      console.log(`Server is running on port ${env.port}`);
     });
   } catch (error) {
     console.error(`Connection Error: ${error.message}`);

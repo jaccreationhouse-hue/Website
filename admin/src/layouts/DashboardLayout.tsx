@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { 
   FaTachometerAlt, FaFolderOpen, FaConciergeBell, 
   FaUsers, FaEnvelope, FaSlidersH, 
-  FaSignOutAlt, FaSun, FaMoon, FaBars, FaTimes, FaGraduationCap
+  FaSignOutAlt, FaSun, FaMoon, FaBars, FaTimes, FaGraduationCap, FaBriefcase
 } from 'react-icons/fa';
 
 interface SidebarProps {
@@ -238,6 +238,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, darkMode, t
     { label: 'Services', path: '/services', icon: <FaConciergeBell /> },
     { label: 'Team Members', path: '/team', icon: <FaUsers /> },
     { label: 'Programs', path: '/programs', icon: <FaGraduationCap /> },
+    { label: 'Career Openings', path: '/career-openings', icon: <FaBriefcase /> },
+    { label: 'Applications', path: '/career-applications', icon: <FaEnvelope /> },
     { label: 'Contact Enquiries', path: '/contacts', icon: <FaEnvelope /> },
     { label: 'Settings', path: '/settings', icon: <FaSlidersH /> }
   ];

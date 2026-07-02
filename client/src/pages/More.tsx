@@ -1,4 +1,4 @@
-import { FiClock, FiHome, FiCheck, FiSliders } from 'react-icons/fi';
+import { FiClock, FiCheck } from 'react-icons/fi';
 
 export default function More() {
   return (

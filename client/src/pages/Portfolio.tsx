@@ -184,6 +184,10 @@ export default function Portfolio() {
                       <img 
                         src={resolveUrl(project.visual)} 
                         alt={project.title} 
+                        width="256"
+                        height="256"
+                        loading="lazy"
+                        decoding="async"
                         style={{
                           maxWidth: '100%',
                           maxHeight: '100%',
@@ -288,6 +292,9 @@ export default function Portfolio() {
                 src={resolveUrl(activeLogo.visual)} 
                 alt={activeLogo.title} 
                 className="lightbox-image"
+                width="512"
+                height="512"
+                decoding="async"
               />
               <div className="lightbox-info">
                 <h3>{activeLogo.title}</h3>

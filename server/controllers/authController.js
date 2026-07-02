@@ -1,11 +1,10 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import crypto from 'crypto';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'jac_medialand_secret_key_12345';
+import { env } from '../config/env.js';
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign({ id }, env.jwtSecret, { expiresIn: '30d' });
 };
 
 export const register = async (req, res) => {

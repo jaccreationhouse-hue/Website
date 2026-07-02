@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 
 const Container = styled.div`
   display: flex;
@@ -198,7 +198,7 @@ const Projects: React.FC = () => {
                 </IconButton>
               </CardActions>
               {proj.thumbnailImage ? (
-                <ProjectImage src={proj.thumbnailImage.startsWith('/uploads') ? `${import.meta.env.VITE_CMS_API_URL || 'http://localhost:4000'}${proj.thumbnailImage}` : proj.thumbnailImage} alt={proj.title} />
+                <ProjectImage src={resolveMediaUrl(proj.thumbnailImage)} alt={proj.title} />
               ) : (
                 <div style={{ width: '100%', height: 180, background: '#3b82f615', borderRadius: 12, border: '2px dashed #3b82f6' }} />
               )}

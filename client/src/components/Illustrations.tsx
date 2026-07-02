@@ -545,6 +545,10 @@ export function TeamIllustration({ className }: IllustrationProps) {
       src={professionalTeamImage} 
       alt="Professional Team collaborating" 
       className={className} 
+      width="1024"
+      height="682"
+      loading="lazy"
+      decoding="async"
       style={{ maxWidth: '100%', height: 'auto', display: 'block' }} 
     />
   );
