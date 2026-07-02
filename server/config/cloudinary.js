@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { env } from './env.js';
 
 cloudinary.config({
@@ -10,9 +9,16 @@ cloudinary.config({
 
 export { cloudinary };
 
-export function createCloudinaryStorage(params) {
-  return new CloudinaryStorage({
-    cloudinary,
-    params
+export function uploadBufferToCloudinary(fileBuffer, options = {}) {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(result);
+    });
+
+    stream.end(fileBuffer);
   });
 }

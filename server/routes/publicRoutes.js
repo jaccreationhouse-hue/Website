@@ -12,16 +12,15 @@ import Program from '../models/Program.js';
 import Activity from '../models/Activity.js';
 import CareerOpening from '../models/CareerOpening.js';
 import CareerApplication from '../models/CareerApplication.js';
-import { createCloudinaryStorage } from '../config/cloudinary.js';
+import { uploadBufferToCloudinary } from '../config/cloudinary.js';
 
 const router = express.Router();
-const storage = createCloudinaryStorage({
-  folder: 'jac_resumes',
-  resource_type: 'raw',
-  allowed_formats: ['pdf', 'doc', 'docx']
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 8 * 1024 * 1024
+  }
 });
-
-const upload = multer({ storage });
 
 function slugify(value = '') {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
@@ -186,7 +185,7 @@ router.post('/v1/public/sites/:siteKey/careers/applications', upload.single('res
     if (!name || !email || !coverLetter) {
       return res.status(400).json({ message: 'Name, email, and cover letter are required.' });
     }
-    if (!req.file?.path) {
+    if (!req.file?.buffer) {
       return res.status(400).json({ message: 'Resume upload is required.' });
     }
     if (req.body.website) {
@@ -212,6 +211,12 @@ router.post('/v1/public/sites/:siteKey/careers/applications', upload.single('res
       });
     }
 
+    const uploadResult = await uploadBufferToCloudinary(req.file.buffer, {
+      folder: 'jac_resumes',
+      resource_type: 'raw',
+      public_id: `${Date.now()}-${req.file.originalname.replace(/[^a-zA-Z0-9._-]+/g, '-')}`
+    });
+
     const application = await CareerApplication.create({
       openingSlug,
       role: resolvedRole,
@@ -223,7 +228,7 @@ router.post('/v1/public/sites/:siteKey/careers/applications', upload.single('res
       coverLetter,
       source,
       idempotencyKey,
-      resumeUrl: req.file.path,
+      resumeUrl: uploadResult.secure_url,
       resumeOriginalName: req.file.originalname
     });
 

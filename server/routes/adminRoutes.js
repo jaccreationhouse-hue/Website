@@ -1,7 +1,5 @@
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 import { protect } from '../middleware/auth.js';
 import {
   getDashboardStats,
@@ -48,28 +46,33 @@ import {
 } from '../controllers/adminController.js';
 
 const router = express.Router();
-import { createCloudinaryStorage } from '../config/cloudinary.js';
+import { uploadBufferToCloudinary } from '../config/cloudinary.js';
 
-// Multer Config for File Uploads
-const storage = createCloudinaryStorage({
-  folder: 'jac_uploads',
-  allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif']
-  // Note: Cloudinary restricts some formats like svg/ico for security by default unless configured in their dashboard.
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 8 * 1024 * 1024
+  }
 });
-
-const upload = multer({ storage });
 
 // Stats Route
 router.get('/stats', protect, getDashboardStats);
 
 // File Upload Route
-router.post('/upload', protect, upload.single('image'), (req, res) => {
+router.post('/upload', protect, upload.single('image'), async (req, res, next) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
-  // req.file.path will hold the secure Cloudinary URL (https://...)
-  const fileUrl = req.file.path;
-  res.status(201).json({ url: fileUrl });
+  try {
+    const result = await uploadBufferToCloudinary(req.file.buffer, {
+      folder: 'jac_uploads',
+      resource_type: 'image'
+    });
+
+    res.status(201).json({ url: result.secure_url });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Projects
