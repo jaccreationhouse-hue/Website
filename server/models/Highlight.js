@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
 const highlightSchema = new mongoose.Schema({
-  slug: { type: String, required: true, trim: true, unique: true },
-  title: { type: String, required: true, trim: true },
-  value: { type: String, required: true, trim: true },
+  slug: { type: String, trim: true, unique: true },
+  title: { type: String, trim: true },
+  value: { type: String, trim: true },
   status: {
     type: String,
     enum: ['draft', 'published', 'archived'],

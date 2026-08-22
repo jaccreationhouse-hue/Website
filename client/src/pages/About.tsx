@@ -46,7 +46,43 @@ export default function About() {
   const settings = useCmsSettings();
   const teamMembers = useCmsCollection<TeamMemberItem>('teamMembers', fallbackTeamMembers);
   const founder = teamMembers.find((member) => member.featured) ?? teamMembers[0] ?? fallbackTeamMembers[0];
-  const team = teamMembers.filter((member) => !member.featured);
+
+  const rolePriority: Record<string, number> = {
+    'hr': 1,
+    'manager': 1,
+    'project manager': 2,
+    'team lead': 3,
+    'developer': 4,
+    'ui/ux': 5,
+    'ui ux': 5,
+    'designer': 6, // graphic designer fallback
+    'graphic designer': 6,
+    'digital marketing': 7,
+    'seo': 8,
+    'tester': 9,
+    'devops': 10,
+    'intern': 11
+  };
+
+  const getPriority = (role: string = '') => {
+    const normalized = role.toLowerCase().trim();
+    if (normalized.includes('project manager')) return 2;
+    if (normalized.includes('hr') || normalized.includes('manager')) return 1;
+    if (normalized.includes('team lead')) return 3;
+    if (normalized.includes('developer')) return 4;
+    if (normalized.includes('ui/ux') || normalized.includes('ui ux')) return 5;
+    if (normalized.includes('graphic')) return 6;
+    if (normalized.includes('digital marketing')) return 7;
+    if (normalized.includes('seo')) return 8;
+    if (normalized.includes('tester')) return 9;
+    if (normalized.includes('devops')) return 10;
+    if (normalized.includes('intern')) return 11;
+    return 99; // Default for unknown roles
+  };
+
+  const team = teamMembers
+    .filter((member) => !member.featured)
+    .sort((a, b) => getPriority(a.role) - getPriority(b.role));
 
   return (
     <main className="page abp-page" style={{ display: 'block' }}>

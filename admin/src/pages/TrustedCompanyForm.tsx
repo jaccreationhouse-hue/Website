@@ -4,10 +4,17 @@ import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa';
 import { api, resolveMediaUrl } from '../services/api';
 
-const Container = styled.div`display:flex;flex-direction:column;gap:1.5rem;`;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  margin: 0 auto;
+  width: 100%;
+`;
 const Header = styled.div`display:flex;align-items:center;gap:1rem;`;
 const Back = styled(Link)`display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:${({theme})=>theme.cardBg};border:1px solid ${({theme})=>theme.cardBorder};color:${({theme})=>theme.text};text-decoration:none;`;
-const Card = styled.div`background:${({theme})=>theme.cardBg};border:1px solid ${({theme})=>theme.cardBorder};border-radius:16px;padding:2rem;max-width:760px;`;
+const Card = styled.div`background:${({theme})=>theme.cardBg};border:1px solid ${({theme})=>theme.cardBorder};border-radius:16px;padding:2rem;width: 100%;`;
 const Form = styled.form`display:flex;flex-direction:column;gap:1rem;`;
 const Input = styled.input`padding:.7rem .85rem;border-radius:8px;border:1px solid ${({theme})=>theme.borderColor};background:${({theme})=>theme.inputBg};color:${({theme})=>theme.text};`;
 const Select = styled.select`padding:.7rem .85rem;border-radius:8px;border:1px solid ${({theme})=>theme.borderColor};background:${({theme})=>theme.inputBg};color:${({theme})=>theme.text};`;
@@ -58,9 +65,9 @@ export default function TrustedCompanyForm() {
       <Header><Back to="/trusted-companies"><FaArrowLeft /></Back><h1>{id ? 'Edit Trusted Company' : 'Add Trusted Company'}</h1></Header>
       <Card>
         <Form onSubmit={onSubmit}>
-          <Input value={title} onChange={(e) => { setTitle(e.target.value); if (!id) setSlug(slugify(e.target.value)); }} placeholder="Company name" required />
-          <Input value={slug} onChange={(e) => setSlug(slugify(e.target.value))} placeholder="slug" required />
-          <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="Logo URL" required />
+          <Input value={title} onChange={(e) => { setTitle(e.target.value); if (!id) setSlug(slugify(e.target.value)); }} placeholder="Company name" />
+          <Input value={slug} onChange={(e) => setSlug(slugify(e.target.value))} placeholder="slug" />
+          <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="Logo URL" />
           <Input type="file" accept="image/*" onChange={handleUpload} />
           {logoUrl && <div style={{ height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', borderRadius: 8 }}><img src={resolveMediaUrl(logoUrl)} alt={title || 'Preview'} style={{ maxWidth: '100%', maxHeight: 72, objectFit: 'contain' }} /></div>}
           <Input value={website} onChange={(e) => setWebsite(e.target.value)} placeholder="https://company.example" />

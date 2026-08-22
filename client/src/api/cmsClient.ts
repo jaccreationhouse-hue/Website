@@ -27,8 +27,10 @@ export async function fetchCmsJson<T>(
   try {
     const response = await (options.fetchImpl ?? fetch)(buildCmsUrl(path, options.baseUrl), {
       ...init,
+      cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
         ...init.headers
       },
       signal: controller.signal

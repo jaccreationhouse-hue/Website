@@ -140,7 +140,7 @@ const TextArea = styled.textarea`
 `;
 
 const PreviewImage = styled.img`
-  max-width: 120px;
+  width: 100%;
   max-height: 80px;
   object-fit: contain;
   border-radius: 8px;
@@ -244,7 +244,7 @@ const Settings: React.FC = () => {
           <CardTitle>Brand Assets</CardTitle>
           <FormGroup>
             <Label>Company Name</Label>
-            <Input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)} required placeholder="JAC MediaLand" />
+            <Input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="JAC MediaLand" />
           </FormGroup>
           <FormGroup>
             <Label>Logo Link / Upload</Label>
@@ -272,7 +272,7 @@ const Settings: React.FC = () => {
           <CardTitle>Contact Information</CardTitle>
           <FormGroup>
             <Label>Contact Email</Label>
-            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="info@company.com" />
+            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="info@company.com" />
           </FormGroup>
           <FormGroup>
             <Label>Phone Number</Label>

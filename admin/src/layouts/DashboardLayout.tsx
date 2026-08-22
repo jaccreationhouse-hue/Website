@@ -35,6 +35,8 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
 const Sidebar = styled.aside<SidebarProps>`
   width: 280px;
   background: ${({ theme }) => theme.sidebarBg};
+  backdrop-filter: blur(${({ theme }) => theme.glassBlur});
+  -webkit-backdrop-filter: blur(${({ theme }) => theme.glassBlur});
   border-right: 1px solid ${({ theme }) => theme.cardBorder};
   padding: 2rem 1.5rem;
   display: flex;
@@ -61,12 +63,13 @@ const SidebarBrand = styled.div`
   align-items: center;
   gap: 0.5rem;
   letter-spacing: -0.02em;
+  padding-left: 0.5rem;
 `;
 
 const NavList = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
   flex-grow: 1;
 `;
 
@@ -74,18 +77,19 @@ const NavItem = styled(Link)<{ $active: boolean }>`
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
   color: ${({ $active, theme }) => ($active ? theme.sidebarActiveText : theme.textLight)};
   background: ${({ $active, theme }) => ($active ? theme.sidebarActiveBg : 'transparent')};
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    color: ${({ theme }) => theme.text};
+    color: ${({ $active, theme }) => ($active ? theme.sidebarActiveText : theme.text)};
     background: ${({ $active, theme }) => ($active ? theme.sidebarActiveBg : theme.scrollTrack)};
+    transform: ${({ $active }) => ($active ? 'none' : 'translateX(4px)')};
   }
 `;
 
@@ -97,13 +101,19 @@ const MainContent = styled.main`
 `;
 
 const Topbar = styled.header`
-  height: 64px;
+  height: 68px;
   background: ${({ theme }) => theme.cardBg};
+  backdrop-filter: blur(${({ theme }) => theme.glassBlur});
+  -webkit-backdrop-filter: blur(${({ theme }) => theme.glassBlur});
   border-bottom: 1px solid ${({ theme }) => theme.cardBorder};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 
   @media (max-width: 768px) {
     padding: 0 1rem;

@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 const serviceSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
+  name: { type: String, trim: true },
   slug: { type: String, trim: true, unique: true, sparse: true },
-  icon: { type: String, required: true }, // e.g., 'FaCode', 'FaPaintBrush'
+  icon: { type: String }, // e.g., 'FaCode', 'FaPaintBrush'
   subtitle: { type: String, default: '', trim: true },
   tagline: { type: String, default: '', trim: true },
-  description: { type: String, required: true, trim: true },
+  description: { type: String, trim: true },
   capabilities: [{ type: String, trim: true }],
   featured: { type: Boolean, default: false },
   status: {

@@ -9,6 +9,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -49,7 +52,7 @@ const FormCard = styled.div`
   border-radius: 16px;
   padding: 2.5rem;
   box-shadow: ${({ theme }) => theme.shadow};
-  max-width: 800px;
+  width: 100%;
 
   @media (max-width: 768px) {
     padding: 1.5rem;
@@ -198,12 +201,12 @@ const ServiceForm: React.FC = () => {
             <Input type="text" value={name} onChange={e => {
               setName(e.target.value);
               if (!id) setSlug(slugify(e.target.value));
-            }} required />
+            }} />
           </FormGroup>
 
           <FormGroup>
             <Label>Slug</Label>
-            <Input type="text" value={slug} onChange={e => setSlug(slugify(e.target.value))} required />
+            <Input type="text" value={slug} onChange={e => setSlug(slugify(e.target.value))} />
           </FormGroup>
           
           <FormGroup>
@@ -213,7 +216,7 @@ const ServiceForm: React.FC = () => {
                 Preview: <DynamicFaIcon name={icon} />
               </div>
             </Label>
-            <Input type="text" value={icon} onChange={e => setIcon(e.target.value)} required placeholder="FaCode" />
+            <Input type="text" value={icon} onChange={e => setIcon(e.target.value)} placeholder="FaCode" />
           </FormGroup>
 
           <FormGroup>
@@ -228,7 +231,7 @@ const ServiceForm: React.FC = () => {
           
           <FormGroup>
             <Label>Description</Label>
-            <TextArea value={description} onChange={e => setDescription(e.target.value)} required />
+            <TextArea value={description} onChange={e => setDescription(e.target.value)} />
           </FormGroup>
 
           <FormGroup>

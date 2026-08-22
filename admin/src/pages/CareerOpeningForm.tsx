@@ -8,6 +8,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -40,7 +43,7 @@ const Card = styled.div`
   border-radius: 16px;
   padding: 2rem;
   box-shadow: ${({ theme }) => theme.shadow};
-  max-width: 960px;
+  width: 100%;
 `;
 
 const Form = styled.form`
@@ -216,12 +219,12 @@ const CareerOpeningForm: React.FC = () => {
             <Input value={title} onChange={(event) => {
               setTitle(event.target.value);
               if (!id) setSlug(slugify(event.target.value));
-            }} required />
+            }} />
           </FormGroup>
           <FormRow>
             <FormGroup>
               <Label>Slug</Label>
-              <Input value={slug} onChange={(event) => setSlug(slugify(event.target.value))} required />
+              <Input value={slug} onChange={(event) => setSlug(slugify(event.target.value))} />
             </FormGroup>
             <FormGroup>
               <Label>Status</Label>
@@ -239,13 +242,13 @@ const CareerOpeningForm: React.FC = () => {
             </FormGroup>
             <FormGroup>
               <Label>Location</Label>
-              <Input value={locationValue} onChange={(event) => setLocationValue(event.target.value)} required />
+              <Input value={locationValue} onChange={(event) => setLocationValue(event.target.value)} />
             </FormGroup>
           </FormRow>
           <FormRow>
             <FormGroup>
               <Label>Employment Type</Label>
-              <Input value={employmentType} onChange={(event) => setEmploymentType(event.target.value)} required />
+              <Input value={employmentType} onChange={(event) => setEmploymentType(event.target.value)} />
             </FormGroup>
             <FormGroup>
               <Label>Workplace Type</Label>
@@ -264,7 +267,7 @@ const CareerOpeningForm: React.FC = () => {
           </FormRow>
           <FormGroup>
             <Label>Description</Label>
-            <TextArea value={description} onChange={(event) => setDescription(event.target.value)} required />
+            <TextArea value={description} onChange={(event) => setDescription(event.target.value)} />
           </FormGroup>
           <FormRow>
             <FormGroup>

@@ -8,6 +8,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -46,9 +49,9 @@ const FormCard = styled.div`
   backdrop-filter: ${({ theme }) => theme.glassBlur};
   border: 1px solid ${({ theme }) => theme.cardBorder};
   border-radius: 16px;
-  padding: 2.5rem;
+  padding: 3rem;
   box-shadow: ${({ theme }) => theme.shadow};
-  max-width: 800px;
+  width: 100%;
 
   @media (max-width: 768px) {
     padding: 1.5rem;
@@ -73,31 +76,61 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 0.6rem 0.8rem;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.borderColor};
   background: ${({ theme }) => theme.inputBg};
   color: ${({ theme }) => theme.text};
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
   
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.primary};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.primary}33;
+  }
+`;
+
+const Select = styled.select`
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid ${({ theme }) => theme.borderColor};
+  background: ${({ theme }) => theme.inputBg};
+  color: ${({ theme }) => theme.text};
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.primary};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.primary}33;
   }
 `;
 
 const SaveButton = styled.button`
-  padding: 0.75rem;
+  padding: 0.85rem;
   background: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.primaryText};
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: all 0.2s ease;
+  margin-top: 1.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
 
   &:hover {
     background: ${({ theme }) => theme.primaryHover};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(0,0,0,0.15);
+  }
+  
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,0.1);
   }
 `;
 
@@ -201,11 +234,24 @@ const TeamForm: React.FC = () => {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label>Employee Name</Label>
-            <Input type="text" value={employeeName} onChange={e => setEmployeeName(e.target.value)} required />
+            <Input type="text" value={employeeName} onChange={e => setEmployeeName(e.target.value)} />
           </FormGroup>
           <FormGroup>
             <Label>Designation</Label>
-            <Input type="text" value={designation} onChange={e => setDesignation(e.target.value)} required />
+            <Select value={designation} onChange={e => setDesignation(e.target.value)}>
+              <option value="">Select Designation...</option>
+              <option value="HR">HR</option>
+              <option value="Project Manager">Project Manager</option>
+              <option value="Team Lead">Team Lead</option>
+              <option value="Developer">Developer</option>
+              <option value="UI/UX Designer">UI/UX Designer</option>
+              <option value="Graphic Designer">Graphic Designer</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="SEO Executive">SEO Executive</option>
+              <option value="Tester">Tester</option>
+              <option value="DevOps">DevOps</option>
+              <option value="Intern">Intern</option>
+            </Select>
           </FormGroup>
           <FormGroup>
             <Label>Profile Photo URL / Upload</Label>
@@ -214,7 +260,7 @@ const TeamForm: React.FC = () => {
           </FormGroup>
           <FormGroup>
             <Label>Email</Label>
-            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} />
           </FormGroup>
           <FormGroup>
             <Label>Mobile Number</Label>

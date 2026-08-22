@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
 const careerOpeningSchema = new mongoose.Schema({
-  slug: { type: String, required: true, trim: true, unique: true },
-  title: { type: String, required: true, trim: true },
+  slug: { type: String, trim: true, unique: true },
+  title: { type: String, trim: true },
   department: { type: String, default: '', trim: true },
-  location: { type: String, required: true, trim: true },
-  employmentType: { type: String, required: true, trim: true },
+  location: { type: String, trim: true },
+  employmentType: { type: String, trim: true },
   workplaceType: { type: String, default: '', trim: true },
   salary: { type: String, default: '', trim: true },
-  description: { type: String, required: true, trim: true },
+  description: { type: String, trim: true },
   responsibilities: [{ type: String, trim: true }],
   requirements: [{ type: String, trim: true }],
   benefits: [{ type: String, trim: true }],

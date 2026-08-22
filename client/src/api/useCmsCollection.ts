@@ -6,36 +6,6 @@ type UseCmsCollectionOptions = {
   deferDelayMs?: number;
 };
 
-function scheduleIdleWork(callback: () => void): () => void {
-  if (typeof window === 'undefined') {
-    callback();
-    return () => {};
-  }
-
-  if ('requestIdleCallback' in window) {
-    const idleId = window.requestIdleCallback(callback, { timeout: 2500 });
-    return () => window.cancelIdleCallback(idleId);
-  }
-
-  const timeoutId = globalThis.setTimeout(callback, 1200);
-  return () => globalThis.clearTimeout(timeoutId);
-}
-
-function scheduleDeferredWork(callback: () => void, delayMs = 0): () => void {
-  if (typeof window === 'undefined' || delayMs <= 0) {
-    return scheduleIdleWork(callback);
-  }
-
-  let cancelIdleWork: (() => void) | undefined;
-  const timeoutId = window.setTimeout(() => {
-    cancelIdleWork = scheduleIdleWork(callback);
-  }, delayMs);
-
-  return () => {
-    window.clearTimeout(timeoutId);
-    cancelIdleWork?.();
-  };
-}
 
 export function useCmsCollection<T>(
   collectionKey: string,
@@ -60,11 +30,7 @@ export function useCmsCollectionState<T>(
       void fetchCmsCollection<T>(collectionKey)
         .then((records) => {
           if (active) {
-            // If backend returns an empty array but we have fallback data,
-            // it likely means the backend route is missing or DB is empty. Use fallback.
-            if (Array.isArray(records) && records.length === 0 && fallback.length > 0) {
-              setItems(fallback);
-            } else {
+            if (Array.isArray(records)) {
               setItems(records);
             }
             setError('');
@@ -81,16 +47,11 @@ export function useCmsCollectionState<T>(
         });
     };
 
-    const cancelIdleWork = options.deferUntilIdle
-      ? scheduleDeferredWork(loadCollection, options.deferDelayMs)
-      : undefined;
-    if (!options.deferUntilIdle) {
-      loadCollection();
-    }
+    // Fetch immediately to prevent stale UI state
+    loadCollection();
 
     return () => {
       active = false;
-      cancelIdleWork?.();
     };
   }, [collectionKey, fallback, options.deferDelayMs, options.deferUntilIdle]);
 

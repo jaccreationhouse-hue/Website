@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
 const clientLogoSchema = new mongoose.Schema({
-  slug: { type: String, required: true, trim: true, unique: true },
-  title: { type: String, required: true, trim: true },
-  logoUrl: { type: String, required: true, trim: true },
+  slug: { type: String, trim: true, unique: true },
+  title: { type: String, trim: true },
+  logoUrl: { type: String, trim: true },
   website: { type: String, default: '', trim: true },
   status: {
     type: String,

@@ -8,6 +8,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -48,7 +51,7 @@ const FormCard = styled.div`
   border-radius: 16px;
   padding: 2.5rem;
   box-shadow: ${({ theme }) => theme.shadow};
-  max-width: 800px;
+  width: 100%;
 
   @media (max-width: 768px) {
     padding: 1.5rem;
@@ -189,13 +192,13 @@ const ProgramForm: React.FC = () => {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label>Program Title</Label>
-            <Input type="text" value={title} onChange={e => handleTitleChange(e.target.value)} required />
+            <Input type="text" value={title} onChange={e => handleTitleChange(e.target.value)} />
           </FormGroup>
           
           <FormRow>
             <FormGroup>
               <Label>Slug</Label>
-              <Input type="text" value={slug} onChange={e => setSlug(e.target.value)} required />
+              <Input type="text" value={slug} onChange={e => setSlug(e.target.value)} />
             </FormGroup>
             <FormGroup>
               <Label>Status</Label>
@@ -217,13 +220,13 @@ const ProgramForm: React.FC = () => {
             </FormGroup>
             <FormGroup>
               <Label>Launch Info (e.g., 'Open Now' or 'Q4 2026')</Label>
-              <Input type="text" value={launch} onChange={e => setLaunch(e.target.value)} required />
+              <Input type="text" value={launch} onChange={e => setLaunch(e.target.value)} />
             </FormGroup>
           </FormRow>
 
           <FormGroup>
             <Label>Description</Label>
-            <TextArea value={description} onChange={e => setDescription(e.target.value)} required />
+            <TextArea value={description} onChange={e => setDescription(e.target.value)} />
           </FormGroup>
 
           <FormRow>

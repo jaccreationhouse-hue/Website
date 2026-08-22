@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 
 const teamSchema = new mongoose.Schema({
   profilePhoto: { type: String },
-  employeeName: { type: String, required: true },
-  designation: { type: String, required: true },
-  email: { type: String, required: true },
+  employeeName: { type: String },
+  designation: { type: String },
+  email: { type: String },
   mobileNumber: { type: String },
   joiningDate: { type: Date, default: Date.now },
   featured: { type: Boolean, default: false },

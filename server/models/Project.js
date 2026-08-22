@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
 const projectSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  category: { type: String, required: true },
+  title: { type: String },
+  category: { type: String },
   industry: { type: String },
-  description: { type: String, required: true },
+  description: { type: String },
   clientName: { type: String },
   projectDate: { type: Date, default: Date.now },
   status: { type: String, enum: ['Completed', 'In Progress', 'Planned'], default: 'Completed' },
